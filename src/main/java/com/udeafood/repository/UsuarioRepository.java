@@ -1,9 +1,10 @@
 package com.udeafood.repository;
 
-import com.udeafood.model.Tienda;
+import com.udeafood.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
-public interface TiendaRepository extends JpaRepository<Tienda, Integer> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 }

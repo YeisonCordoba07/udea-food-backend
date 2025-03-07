@@ -17,8 +17,8 @@ import java.util.List;
 public class FormasDePago {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int idFormaPago;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idFormasDePago;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;

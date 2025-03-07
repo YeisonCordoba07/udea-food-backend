@@ -17,7 +17,7 @@ import java.util.List;
 public class SeccionTienda {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idSeccionTienda;
 
     @Column(name="nombre_seccion_tienda", nullable = false, length = 100)
@@ -26,8 +26,8 @@ public class SeccionTienda {
 
 
 
-    @OneToMany(mappedBy = "id_seccion_tienda")
-    List<Producto> productos;
+    @OneToMany(mappedBy = "seccionTienda", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Producto> productos;
 
 
     @ManyToOne

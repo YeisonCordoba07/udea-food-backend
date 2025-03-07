@@ -9,7 +9,7 @@ import lombok.Data;
 public class ImagenProducto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_imagen_producto")
     private Integer idImagenProducto;
 

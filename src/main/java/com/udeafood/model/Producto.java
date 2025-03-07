@@ -12,7 +12,7 @@ import java.util.List;
 public class Producto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
     private Integer idProducto;
 
@@ -31,8 +31,8 @@ public class Producto {
 
 
 
-    @OneToMany(mappedBy = "id_producto")
-    List<ImagenProducto> imagenesProducto;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImagenProducto> imagenesProducto;
 
 
     @ManyToMany

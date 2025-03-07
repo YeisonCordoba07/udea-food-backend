@@ -25,7 +25,7 @@ public class Rol {
 
 
 
-    @OneToMany(mappedBy = "id_rol")
-    List<Usuario> usuarios;
+    @OneToMany(mappedBy = "rol")
+    private List<Usuario> usuarios;
 }
 

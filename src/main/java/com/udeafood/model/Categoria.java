@@ -19,11 +19,11 @@ import java.util.List;
 public class Categoria {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria")
     private Integer idCategoria;
 
-    @Column(name = "nombre_categoria", unique = true, nullable = false, length = 100)
+    @Column(name = "nombre", unique = true, nullable = false, length = 100)
     private String nombre;
 
     @Column(name = "descripcion", length = 255)

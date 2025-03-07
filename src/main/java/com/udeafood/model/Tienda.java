@@ -22,7 +22,7 @@ import java.util.List;
 public class Tienda {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tienda")
     private Integer id;
 

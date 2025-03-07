@@ -13,8 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class TiendaController {
 
 
-    @GetMapping
-    public ResponseEntity<List<tienda>> getAllStores() {
-        return ResponseEntity.ok(categoriaService.getAllCategories());
-    }
+
 }

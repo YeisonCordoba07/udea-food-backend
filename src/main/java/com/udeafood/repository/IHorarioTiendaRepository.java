@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface ProductoRepository extends JpaRepository<ProductoRepository, Integer> {
+public interface IHorarioTiendaRepository extends JpaRepository<IHorarioTiendaRepository, Integer> {
 }

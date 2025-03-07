@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface RolRepository extends JpaRepository<RolRepository, Integer> {
+public interface ISeccionTiendaRepository extends JpaRepository<ISeccionTiendaRepository, Integer> {
 }

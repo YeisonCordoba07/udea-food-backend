@@ -1,0 +1,38 @@
+package com.udeafood.model;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "seccion_tienda")
+public class SeccionTienda {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int idSeccionTienda;
+
+    @Column(name="nombre_seccion_tienda", nullable = false, length = 100)
+    private String nombreSeccionTienda;
+
+
+
+
+    @OneToMany(mappedBy = "id_seccion_tienda")
+    List<Producto> productos;
+
+
+    @ManyToOne
+    @JoinColumn(name = "id_tienda")
+    private Tienda tienda;
+
+
+}

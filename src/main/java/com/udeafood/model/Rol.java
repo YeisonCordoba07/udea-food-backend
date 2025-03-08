@@ -1,6 +1,7 @@
 package com.udeafood.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,12 +20,12 @@ public class Rol {
     @Column(name = "id_rol")
     private Integer idRol;
 
-    @Column(name = "nombre_rol", unique = true, nullable = false, length = 50)
-    private String nombreRol;
+    @Column(name = "nombre", unique = true, nullable = false, length = 50)
+    private String nombre;
 
 
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "rol")
     private List<Usuario> usuarios;
 }

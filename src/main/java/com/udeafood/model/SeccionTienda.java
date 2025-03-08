@@ -20,8 +20,8 @@ public class SeccionTienda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idSeccionTienda;
 
-    @Column(name="nombre_seccion_tienda", nullable = false, length = 100)
-    private String nombreSeccionTienda;
+    @Column(name="nombre", nullable = false, length = 100)
+    private String nombre;
 
 
 

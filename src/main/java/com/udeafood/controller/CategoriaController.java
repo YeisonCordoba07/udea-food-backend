@@ -1,8 +1,7 @@
 package com.udeafood.controller;
 
-
-import com.udeafood.model.Tienda;
-import com.udeafood.sevice.TiendaService;
+import com.udeafood.model.Categoria;
+import com.udeafood.sevice.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,18 +13,15 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/tienda")
+@RequestMapping("/categoria")
 @RequiredArgsConstructor
-public class TiendaController {
+public class CategoriaController {
 
-    private final TiendaService tiendaService;
+    private final CategoriaService categoriaService;
 
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Tienda>> getAll(){
-
-        return ResponseEntity.ok( tiendaService.getAll());
+    public ResponseEntity<List<Categoria>> getAll(){
+        return ResponseEntity.ok(categoriaService.getAll());
     }
-
-
 }

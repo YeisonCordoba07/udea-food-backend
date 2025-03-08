@@ -1,5 +1,6 @@
 package com.udeafood.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,11 +32,12 @@ public class Categoria {
 
 
 
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "categorias")
     private List<Producto> productos;
 
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categorias")
     private List<Tienda> tiendas;
 }

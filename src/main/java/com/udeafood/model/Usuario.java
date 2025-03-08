@@ -1,4 +1,6 @@
 package com.udeafood.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.udeafood.model.util.TipoDocumento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -62,13 +64,12 @@ public class Usuario {
 
 
 
-
-
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Tienda> tiendas;
 

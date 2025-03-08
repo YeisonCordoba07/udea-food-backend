@@ -1,6 +1,7 @@
 package com.udeafood.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +25,7 @@ public class Rol {
     private String nombre;
 
 
-
+    @JsonBackReference
     @JsonIgnore
     @OneToMany(mappedBy = "rol")
     private List<Usuario> usuarios;

@@ -1,6 +1,9 @@
 package com.udeafood.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.udeafood.model.util.TipoTienda;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -63,19 +66,23 @@ public class Tienda {
 
 
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SeccionTienda> secciones;
 
 
+    @JsonIgnore
     @OneToOne(mappedBy = "tienda", cascade = CascadeType.ALL, orphanRemoval = true)
     private HorarioTienda horarioTienda;
 
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "tienda_formas_de_pago",
@@ -85,6 +92,7 @@ public class Tienda {
     private List<FormasDePago> formasDePago;
 
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(
             name = "categoria_tienda",

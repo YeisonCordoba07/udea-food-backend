@@ -1,5 +1,7 @@
 package com.udeafood.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +30,7 @@ public class FormasDePago {
 
 
 
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "formasDePago")
     private List<Tienda> tiendas;
 

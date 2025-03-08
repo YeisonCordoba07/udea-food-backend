@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.util.List;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,6 +17,7 @@ import java.util.List;
 @Data
 @Table(name = "rol")
 public class Rol {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rol")
@@ -23,6 +25,8 @@ public class Rol {
 
     @Column(name = "nombre", unique = true, nullable = false, length = 50)
     private String nombre;
+
+
 
 
     @JsonBackReference

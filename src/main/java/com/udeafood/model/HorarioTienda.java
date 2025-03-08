@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalTime;
 
+
 @Entity
 @Data
 @Table(name = "horario_tienda")

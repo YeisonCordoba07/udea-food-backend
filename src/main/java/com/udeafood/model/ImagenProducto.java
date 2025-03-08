@@ -3,6 +3,7 @@ package com.udeafood.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+
 @Entity
 @Data
 @Table(name = "imagen_producto")
@@ -15,6 +16,7 @@ public class ImagenProducto {
 
     @Column(name = "enlace_imagen", nullable = false, length = 500)
     private String enlaceImagen;
+
 
 
 

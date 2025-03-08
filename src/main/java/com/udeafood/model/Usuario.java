@@ -64,10 +64,12 @@ public class Usuario {
 
 
 
+
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)

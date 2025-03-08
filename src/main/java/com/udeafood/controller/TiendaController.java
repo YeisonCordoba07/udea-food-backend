@@ -5,10 +5,7 @@ import com.udeafood.model.Tienda;
 import com.udeafood.sevice.TiendaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,16 @@ public class TiendaController {
     public ResponseEntity<List<Tienda>> getAll(){
 
         return ResponseEntity.ok( tiendaService.getAll());
+    }
+
+    @GetMapping("/buscarPorId")
+    public ResponseEntity<Tienda> getTiendaById(@RequestParam Integer id){
+        return ResponseEntity.ok(tiendaService.getTiendaById(id));
+    }
+
+    @GetMapping("/buscarPorNombre")
+    public ResponseEntity<List<Tienda>> getTiendaByNombre(@RequestParam String nombre){
+        return ResponseEntity.ok(tiendaService.getTiendaByNombre(nombre));
     }
 
 

@@ -20,4 +20,12 @@ public class TiendaService {
     public List<Tienda> getAll(){
         return iTiendaRepository.findAll();
     }
+
+    public Tienda getTiendaById(Integer id){
+        return iTiendaRepository.findById(id).orElse(null);
+    }
+
+    public List<Tienda> getTiendaByNombre(String nombre){
+        return iTiendaRepository.findByNombre(nombre);
+    }
 }

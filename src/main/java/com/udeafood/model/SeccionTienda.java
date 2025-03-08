@@ -26,11 +26,11 @@ public class SeccionTienda {
 
 
 
-    @OneToMany(mappedBy = "seccionTienda", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "seccionTienda", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Producto> productos;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tienda")
     private Tienda tienda;
 

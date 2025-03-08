@@ -32,11 +32,11 @@ public class Producto {
 
 
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ImagenProducto> imagenesProducto;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "categoria_producto",
             joinColumns = @JoinColumn(name = "id_producto"),
@@ -44,7 +44,7 @@ public class Producto {
     private List<Categoria> categorias;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_seccion_tienda", nullable = false)
     private SeccionTienda seccionTienda;
 }

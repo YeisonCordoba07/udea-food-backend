@@ -34,12 +34,12 @@ public class Categoria {
 
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "categorias")
+    @ManyToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
     private List<Producto> productos;
 
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "categorias")
+    @ManyToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
     private List<Tienda> tiendas;
 }
 

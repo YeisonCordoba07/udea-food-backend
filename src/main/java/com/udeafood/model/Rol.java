@@ -29,9 +29,8 @@ public class Rol {
 
 
 
-    @JsonBackReference
     @JsonIgnore
-    @OneToMany(mappedBy = "rol")
+    @OneToMany(mappedBy = "rol", fetch = FetchType.LAZY)
     private List<Usuario> usuarios;
 }
 

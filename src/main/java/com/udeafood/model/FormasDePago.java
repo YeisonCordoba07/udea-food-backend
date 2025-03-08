@@ -33,7 +33,7 @@ public class FormasDePago {
 
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "formasDePago")
+    @ManyToMany(mappedBy = "formasDePago", fetch = FetchType.LAZY)
     private List<Tienda> tiendas;
 
 }

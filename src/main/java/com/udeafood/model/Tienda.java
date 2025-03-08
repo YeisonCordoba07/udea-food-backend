@@ -66,13 +66,13 @@ public class Tienda {
 
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<SeccionTienda> secciones;
 
 
@@ -82,7 +82,7 @@ public class Tienda {
 
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "tienda_formas_de_pago",
             joinColumns = @JoinColumn(name = "id_tienda"),
@@ -92,7 +92,7 @@ public class Tienda {
 
 
     @JsonBackReference
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "categoria_tienda",
             joinColumns = @JoinColumn(name = "id_tienda"),

@@ -28,4 +28,8 @@ public class TiendaService {
     public List<Tienda> getTiendaByNombre(String nombre){
         return iTiendaRepository.findByNombre(nombre);
     }
+
+    public List<Tienda> getTiendaByCategoria(String categoria){
+        return iTiendaRepository.findTiendaByCategoria(categoria);
+    }
 }

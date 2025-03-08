@@ -16,4 +16,10 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
             "   OR LOWER(t.nombre) LIKE LOWER(CONCAT(:palabra, '%')) " +      // Empieza con
             "   OR LOWER(t.nombre) LIKE LOWER(CONCAT('%', :palabra))")        // Termina con
     List<Tienda> findByNombre(@Param("palabra") String palabra);
+
+    @Query("SELECT t FROM Tienda t JOIN t.categorias c " +
+            "WHERE LOWER(c.nombre) LIKE LOWER(CONCAT('%', :categoria, '%')) " + // Contiene
+            "   OR LOWER(c.nombre) LIKE LOWER(CONCAT(:categoria, '%')) " +      // Empieza con
+            "   OR LOWER(c.nombre) LIKE LOWER(CONCAT('%', :categoria))")
+    List<Tienda> findTiendaByCategoria(@Param("categoria") String categoria);
 }

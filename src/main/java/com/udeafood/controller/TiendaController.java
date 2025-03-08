@@ -34,5 +34,10 @@ public class TiendaController {
         return ResponseEntity.ok(tiendaService.getTiendaByNombre(nombre));
     }
 
+    @GetMapping("/buscarPorCategoria")
+    public ResponseEntity<List<Tienda>> getTiendaByCategoria(@RequestParam String categoria){
+        return ResponseEntity.ok(tiendaService.getTiendaByCategoria(categoria));
+    }
+
 
 }

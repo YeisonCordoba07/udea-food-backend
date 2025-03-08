@@ -1,5 +1,6 @@
 package com.udeafood.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -32,6 +33,7 @@ public class Producto {
 
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ImagenProducto> imagenesProducto;
 
@@ -44,6 +46,7 @@ public class Producto {
     private List<Categoria> categorias;
 
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_seccion_tienda", nullable = false)
     private SeccionTienda seccionTienda;

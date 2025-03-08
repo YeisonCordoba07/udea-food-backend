@@ -1,5 +1,6 @@
 package com.udeafood.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +20,7 @@ public class ImagenProducto {
 
 
 
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;

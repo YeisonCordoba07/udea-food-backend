@@ -18,4 +18,8 @@ public class SeccionTiendaService {
     public List<SeccionTienda> getAll(){
         return iSeccionTiendaRepository.findAll();
     }
+
+    public List<SeccionTienda> getByTiendaId(int tiendaId){
+        return iSeccionTiendaRepository.findByTiendaId(tiendaId);
+    }
 }

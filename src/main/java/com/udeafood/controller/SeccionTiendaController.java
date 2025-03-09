@@ -4,10 +4,7 @@ import com.udeafood.model.SeccionTienda;
 import com.udeafood.sevice.SeccionTiendaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +19,10 @@ public class SeccionTiendaController {
     @GetMapping("/getAll")
     public ResponseEntity<List<SeccionTienda>> getAll(){
         return ResponseEntity.ok( seccionTiendaService.getAll());
+    }
+
+    @GetMapping("/buscarPorIdTienda")
+    public ResponseEntity<List<SeccionTienda>> getByTiendaId(@RequestParam Integer idTienda){
+        return ResponseEntity.ok( seccionTiendaService.getByTiendaId(idTienda));
     }
 }

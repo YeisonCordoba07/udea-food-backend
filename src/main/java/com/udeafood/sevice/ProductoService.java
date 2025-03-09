@@ -18,4 +18,6 @@ public class ProductoService {
     public List<Producto> getAll(){
         return iProductoRepository.findAll();
     }
+
+
 }

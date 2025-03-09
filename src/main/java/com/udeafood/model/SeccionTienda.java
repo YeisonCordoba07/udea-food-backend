@@ -26,7 +26,7 @@ public class SeccionTienda {
 
 
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "seccionTienda", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Producto> productos;
 

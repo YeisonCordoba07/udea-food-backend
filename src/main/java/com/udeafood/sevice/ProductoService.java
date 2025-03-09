@@ -19,5 +19,13 @@ public class ProductoService {
         return iProductoRepository.findAll();
     }
 
+    public List<Producto> getByIdSeccionTienda(Integer idSeccion){
+        return iProductoRepository.findBySeccionTienda(idSeccion);
+    }
+
+    public List<Producto> getByIdTienda(Integer idTienda){
+        return iProductoRepository.findByIdTienda(idTienda);
+    }
+
 
 }

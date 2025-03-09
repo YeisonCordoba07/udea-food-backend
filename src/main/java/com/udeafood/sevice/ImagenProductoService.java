@@ -18,4 +18,8 @@ public class ImagenProductoService {
     public List<ImagenProducto> getAll(){
         return iImagenProductoRepository.findAll();
     }
+
+    public List<ImagenProducto> getAllByIdProducto(Integer idProducto){
+        return iImagenProductoRepository.findAllByProducto(idProducto);
+    }
 }

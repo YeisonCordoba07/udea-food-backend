@@ -26,4 +26,7 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
             "   OR LOWER(c.nombre) LIKE LOWER(CONCAT('%', :categoria))")
     List<Tienda> findTiendaByCategoria(@Param("categoria") String categoria);
 
+
+    List<Tienda> findAllByUsuario_IdUsuario(Integer idUsuario);
+
 }

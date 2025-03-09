@@ -18,4 +18,5 @@ public class UsuarioService {
     public List<Usuario> getAll(){
         return iUsuarioRepository.findAll();
     }
+
 }

@@ -32,4 +32,8 @@ public class TiendaService {
     public List<Tienda> getTiendaByCategoria(String categoria){
         return iTiendaRepository.findTiendaByCategoria(categoria);
     }
+
+    public List<Tienda> getTiendaByIdUsuario(Integer idUsuario){
+        return iTiendaRepository.findAllByUsuario_IdUsuario(idUsuario);
+    }
 }

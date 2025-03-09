@@ -20,6 +20,6 @@ public class ImagenProductoService {
     }
 
     public List<ImagenProducto> getAllByIdProducto(Integer idProducto){
-        return iImagenProductoRepository.findAllByProducto(idProducto);
+        return iImagenProductoRepository.findAllByProducto_IdProducto(idProducto);
     }
 }

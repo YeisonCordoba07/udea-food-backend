@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface IImagenProductoRepository extends JpaRepository<ImagenProducto, Integer> {
 
-    List<ImagenProducto> findAllByProducto(Integer idProducto);
+    List<ImagenProducto> findAllByProducto_IdProducto(Integer idProducto);
 }

@@ -20,5 +20,6 @@ public interface IProductoRepository extends JpaRepository<Producto, Integer> {
     @Query("SELECT p FROM Producto p JOIN p.seccionTienda s "+
             "JOIN s.tienda t " +
             "WHERE t.idTienda = :idTienda")
-    List<Producto> findByIdTienda(@PathVariable("idTienda") Integer idTienda);
+    List<Producto> findAllByIdTienda(@PathVariable("idTienda") Integer idTienda);
+    
 }

@@ -1,5 +1,6 @@
 package com.udeafood.controller;
 
+import com.udeafood.DTO.ProductoConImagenDTO;
 import com.udeafood.model.Producto;
 import com.udeafood.sevice.ProductoService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,10 @@ public class ProductoController {
     @GetMapping("/buscarPorIdTienda")
     public ResponseEntity<List<Producto>> getByIdTienda(@RequestParam Integer idTienda){
         return ResponseEntity.ok(productoService.getByIdTienda(idTienda));
+    }
+
+    @GetMapping("/buscarPorIdProducto")
+    public ResponseEntity<ProductoConImagenDTO> getByIdProducto(@RequestParam Integer idProducto){
+        return ResponseEntity.ok(productoService.getByIdProducto(idProducto));
     }
 }

@@ -3,7 +3,6 @@ package com.udeafood.sevice;
 import com.udeafood.DTO.ProductoConImagenDTO;
 import com.udeafood.model.ImagenProducto;
 import com.udeafood.model.Producto;
-import com.udeafood.repository.IImagenProductoRepository;
 import com.udeafood.repository.IProductoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -32,7 +32,7 @@ public class ProductoService {
 
 
     public List<Producto> getByIdTienda(Integer idTienda){
-        return iProductoRepository.findByIdTienda(idTienda);
+        return iProductoRepository.findAllByIdTienda(idTienda);
     }
 
 
@@ -40,7 +40,7 @@ public class ProductoService {
         Optional<Producto> producto1 = iProductoRepository.findById(idProducto);
 
         if (producto1.isEmpty()) {
-            return new ProductoConImagenDTO(); // Return empty object
+            return null; // Return empty object
         }
         List<ImagenProducto> listImagenProducto = imagenProductoService.getAllByIdProducto(idProducto);
 

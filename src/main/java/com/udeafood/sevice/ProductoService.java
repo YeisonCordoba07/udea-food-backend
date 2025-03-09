@@ -59,4 +59,9 @@ public class ProductoService {
     }
 
 
+    public List<Producto> getByNombreCategoria(String categoria){
+        return iProductoRepository.findAllByNombreCategoria(categoria);
+    }
+
+
 }

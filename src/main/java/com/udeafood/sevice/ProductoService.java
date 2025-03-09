@@ -27,7 +27,7 @@ public class ProductoService {
 
 
     public List<Producto> getByIdSeccionTienda(Integer idSeccion){
-        return iProductoRepository.findBySeccionTienda(idSeccion);
+        return iProductoRepository.findBySeccionTienda_IdSeccionTienda(idSeccion);
     }
 
 

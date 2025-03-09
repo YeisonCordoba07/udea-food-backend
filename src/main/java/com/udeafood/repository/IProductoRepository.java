@@ -12,14 +12,15 @@ import java.util.List;
 @Repository
 public interface IProductoRepository extends JpaRepository<Producto, Integer> {
 
-    @Query("SELECT p FROM Producto p JOIN p.seccionTienda s " +
+    /*@Query("SELECT p FROM Producto p JOIN p.seccionTienda s " +
             "WHERE s.idSeccionTienda = :idSeccionTienda")
-    List<Producto> findBySeccionTienda(@PathVariable("idSeccionTienda") Integer idSeccionTienda);
+    List<Producto> findBySeccionTienda(@PathVariable("idSeccionTienda") Integer idSeccionTienda);*/
+    List<Producto> findBySeccionTienda_IdSeccionTienda(Integer idSeccionTienda);
 
 
     @Query("SELECT p FROM Producto p JOIN p.seccionTienda s "+
             "JOIN s.tienda t " +
             "WHERE t.idTienda = :idTienda")
     List<Producto> findAllByIdTienda(@PathVariable("idTienda") Integer idTienda);
-    
+
 }

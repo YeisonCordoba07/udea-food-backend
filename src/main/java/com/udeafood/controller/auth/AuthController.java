@@ -1,10 +1,12 @@
 package com.udeafood.controller.auth;
 
+import com.udeafood.DTO.AuthResponse;
+import com.udeafood.DTO.LoginRequest;
+import com.udeafood.model.Usuario;
+import com.udeafood.sevice.auth.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -12,14 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final AuthService authService;
+
+
     @PostMapping("/login")
-    public String login(){
-        return "login susscess";
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest){
+
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
 
     @PostMapping("/register")
-    public String register(){
-        return "register susscess";
+    public ResponseEntity<AuthResponse> register(@RequestBody Usuario usuario){
+        return ResponseEntity.ok(authService.register(usuario));
     }
 }

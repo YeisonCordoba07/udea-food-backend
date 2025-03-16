@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
+
+//VARIABLE DE ENTORNO
 public class JwtService {
     private static final String SECRET_KEY = "yoursecretkeywithoutspacesbecausathiscauseanderror";
 
@@ -31,15 +33,15 @@ public class JwtService {
 
 
 
-    public String getEmailFromToken(String token) {
+    public String getUsuarioFromToken(String token) {
         return getClaim(token, Claims::getSubject);
     }
 
 
 
-    public boolean isTokenValid(String token, String emailAccount) {
-        final String email = getEmailFromToken(token);
-        return (email.equals(emailAccount) && !isTokenExpired(token));
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = getUsuarioFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
 

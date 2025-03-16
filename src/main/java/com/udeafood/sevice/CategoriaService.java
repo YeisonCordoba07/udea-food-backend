@@ -16,6 +16,8 @@ public class CategoriaService {
     private final ICategoriaRepository iCategoriaRepository;
 
 
+
+
     public List<Categoria> getAll(){
         return iCategoriaRepository.findAll();
     }

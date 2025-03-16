@@ -15,6 +15,9 @@ public class UsuarioService {
 
     private final IUsuarioRepository iUsuarioRepository;
 
+
+
+
     public List<Usuario> getAll(){
         return iUsuarioRepository.findAll();
     }

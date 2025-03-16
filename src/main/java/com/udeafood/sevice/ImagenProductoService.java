@@ -15,9 +15,13 @@ public class ImagenProductoService {
 
     private final IImagenProductoRepository iImagenProductoRepository;
 
+
+
+
     public List<ImagenProducto> getAll(){
         return iImagenProductoRepository.findAll();
     }
+
 
     public List<ImagenProducto> getAllByIdProducto(Integer idProducto){
         return iImagenProductoRepository.findAllByProducto_IdProducto(idProducto);

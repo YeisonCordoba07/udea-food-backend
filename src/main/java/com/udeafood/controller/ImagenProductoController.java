@@ -19,6 +19,9 @@ public class ImagenProductoController {
 
     private final ImagenProductoService imagenProductoService;
 
+
+
+
     @GetMapping("/getAll")
     public ResponseEntity<List<ImagenProducto>> getAll(){
         return ResponseEntity.ok( imagenProductoService.getAll());

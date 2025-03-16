@@ -17,21 +17,27 @@ public class TiendaService {
     private final ITiendaRepository iTiendaRepository;
 
 
+
+
     public List<Tienda> getAll(){
         return iTiendaRepository.findAll();
     }
+
 
     public Tienda getTiendaById(Integer id){
         return iTiendaRepository.findById(id).orElse(null);
     }
 
+
     public List<Tienda> getTiendaByNombre(String nombre){
         return iTiendaRepository.findByNombre(nombre);
     }
 
+
     public List<Tienda> getTiendaByCategoria(String categoria){
         return iTiendaRepository.findTiendaByCategoria(categoria);
     }
+
 
     public List<Tienda> getTiendaByIdUsuario(Integer idUsuario){
         return iTiendaRepository.findAllByUsuario_IdUsuario(idUsuario);

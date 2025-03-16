@@ -15,6 +15,9 @@ public class RolService {
 
     private final IRolRepository iRolRepository;
 
+
+
+
     public List<Rol> getAll(){
         return iRolRepository.findAll();
     }

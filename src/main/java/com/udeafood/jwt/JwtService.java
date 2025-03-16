@@ -15,7 +15,11 @@ import java.util.function.Function;
 
 //VARIABLE DE ENTORNO
 public class JwtService {
+
     private static final String SECRET_KEY = "yoursecretkeywithoutspacesbecausathiscauseanderror";
+
+
+
 
     public String getToken(UserDetails user) {
         return Jwts.builder()
@@ -26,11 +30,11 @@ public class JwtService {
                 .compact();  // Compact and return the token
     }
 
+
     public Key getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
 
 
     public String getUsuarioFromToken(String token) {
@@ -38,12 +42,10 @@ public class JwtService {
     }
 
 
-
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUsuarioFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
 
 
     private Claims getAllClaims(String token){
@@ -56,18 +58,15 @@ public class JwtService {
     }
 
 
-
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver){
         final Claims claims = getAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
 
-
     public Date getExpiration(String token){
         return getClaim(token, Claims::getExpiration);
     }
-
 
 
     public boolean isTokenExpired(String token){

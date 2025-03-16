@@ -15,9 +15,13 @@ public class SeccionTiendaService {
 
     private final ISeccionTiendaRepository iSeccionTiendaRepository;
 
+
+
+
     public List<SeccionTienda> getAll(){
         return iSeccionTiendaRepository.findAll();
     }
+
 
     public List<SeccionTienda> getByTiendaId(Integer idTienda){
         return iSeccionTiendaRepository.findAllByIdTienda(idTienda);

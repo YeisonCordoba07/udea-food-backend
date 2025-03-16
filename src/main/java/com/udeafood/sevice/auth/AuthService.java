@@ -10,8 +10,6 @@ import com.udeafood.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,9 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     public final AuthenticationManager authenticationManager;
+
+
+
 
     public AuthResponse register(UsuarioDTO usuarioDTO) {
         Usuario newUser = new Usuario();
@@ -55,8 +56,9 @@ public class AuthService {
                 .build();
     }
 
+
     public AuthResponse login(LoginRequest loginRequestDTO) {
-        Authentication auth = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDTO.getUsername(),
                         loginRequestDTO.getPassword())
@@ -65,7 +67,6 @@ public class AuthService {
         UserDetails userDetails = iUsuarioRepository.findByUsuario(loginRequestDTO.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found -- AuthService"));
 
-        //SecurityContextHolder.getContext().setAuthentication(auth);
         String token = jwtService.getToken(userDetails);
 
 

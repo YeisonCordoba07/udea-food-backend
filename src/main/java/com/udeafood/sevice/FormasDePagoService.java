@@ -17,6 +17,8 @@ public class FormasDePagoService {
 
     private final IFormasDePagoRepository iFormasDePagoRepository;
 
+
+
     public List<FormasDePago> getAll(){
         return iFormasDePagoRepository.findAll();
     }

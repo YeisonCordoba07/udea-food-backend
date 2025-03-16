@@ -18,26 +18,32 @@ public class TiendaController {
     private final TiendaService tiendaService;
 
 
+
+
     @GetMapping("/getAll")
     public ResponseEntity<List<Tienda>> getAll(){
 
         return ResponseEntity.ok( tiendaService.getAll());
     }
 
+
     @GetMapping("/buscarPorId")
     public ResponseEntity<Tienda> getTiendaById(@RequestParam Integer id){
         return ResponseEntity.ok(tiendaService.getTiendaById(id));
     }
+
 
     @GetMapping("/buscarPorNombre")
     public ResponseEntity<List<Tienda>> getTiendaByNombre(@RequestParam String nombre){
         return ResponseEntity.ok(tiendaService.getTiendaByNombre(nombre));
     }
 
+
     @GetMapping("/buscarPorCategoria")
     public ResponseEntity<List<Tienda>> getTiendaByCategoria(@RequestParam String categoria){
         return ResponseEntity.ok(tiendaService.getTiendaByCategoria(categoria));
     }
+
 
     @GetMapping("/buscarPorIdUsuario")
     public ResponseEntity<List<Tienda>> getTiendaByUsuario(@RequestParam Integer idUsuario){

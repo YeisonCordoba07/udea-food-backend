@@ -2,6 +2,7 @@ package com.udeafood.controller.auth;
 
 import com.udeafood.DTO.AuthResponse;
 import com.udeafood.DTO.LoginRequest;
+import com.udeafood.DTO.UsuarioDTO;
 import com.udeafood.model.Usuario;
 import com.udeafood.sevice.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody Usuario usuario){
-        return ResponseEntity.ok(authService.register(usuario));
+    public ResponseEntity<AuthResponse> register(@RequestBody UsuarioDTO usuarioDTO){
+        return ResponseEntity.ok(authService.register(usuarioDTO));
     }
 }

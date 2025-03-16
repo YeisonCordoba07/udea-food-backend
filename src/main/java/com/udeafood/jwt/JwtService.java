@@ -1,21 +1,32 @@
 package com.udeafood.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.security.Key;
+import java.util.Date;
+import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private final SecretKey key = Keys.hmacShaKeyFor(ApplicationConstants.SECRET_KEY_PASSWORD.getBytes());
+    private static final String SECRET_KEY = "your secret key";
 
-
-
-    public String getToken(String email, String roles) {
+    public String getToken(UserDetails user) {
         return Jwts.builder()
-                .setSubject(email)  // Use the email as the subject
-                .claim("roles", roles)
+                .setSubject(user.getUsername())  // Use the email as the subject
                 .setIssuedAt(new Date())  // Emission date
-                .setExpiration(new Date(System.currentTimeMillis() + ApplicationConstants.TOKEN_EXPIRATION_TIME))  // Expiration date
-                .signWith(key)  // Sign with the secret key
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))  // Expiration date
+                .signWith(getKey())  // Sign with the secret key
                 .compact();  // Compact and return the token
+    }
+
+    public Key getKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
 

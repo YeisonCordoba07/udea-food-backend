@@ -2,6 +2,7 @@ package com.udeafood.sevice.auth;
 
 import com.udeafood.DTO.AuthResponse;
 import com.udeafood.DTO.LoginRequest;
+import com.udeafood.jwt.JwtService;
 import com.udeafood.model.Usuario;
 import com.udeafood.repository.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final IUsuarioRepository iUsuarioRepository;
-    private final JWTService jwtService;
+    private final JwtService jwtService;
 
     public AuthResponse register(Usuario usuario) {
         Usuario newUser = new Usuario();
@@ -32,8 +33,7 @@ public class AuthService {
         iUsuarioRepository.save(newUser);
 
         return AuthResponse.builder()
-                .token(token)
-                .role(userRole)
+                .token(jwtService.getToken(newUser))
                 .build();
     }
 

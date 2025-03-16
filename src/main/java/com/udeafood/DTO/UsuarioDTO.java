@@ -10,6 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
+// HACER VALIDACIONES
 public class UsuarioDTO {
     private String usuario;
     private String correo;

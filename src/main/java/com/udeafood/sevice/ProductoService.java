@@ -21,6 +21,8 @@ public class ProductoService {
     private final ImagenProductoService imagenProductoService;
 
 
+
+
     public List<Producto> getAll(){
         return iProductoRepository.findAll();
     }
@@ -49,6 +51,10 @@ public class ProductoService {
 
     private static ProductoConImagenDTO getProductoConImagenDTO(Optional<Producto> producto1, List<ImagenProducto> listImagenProducto) {
         ProductoConImagenDTO productoConImagenDTO = new ProductoConImagenDTO();
+
+        if(producto1.isEmpty()){
+            return null;
+        }
         productoConImagenDTO.setIdProducto(producto1.get().getIdProducto());
         productoConImagenDTO.setNombre(producto1.get().getNombre());
         productoConImagenDTO.setDescripcion(producto1.get().getDescripcion());

@@ -17,25 +17,32 @@ public class ProductoController {
 
     private final ProductoService productoService;
 
+
+
+
     @GetMapping("/getAll")
     public ResponseEntity<List<Producto>> getAll(){
         return ResponseEntity.ok( productoService.getAll());
     }
+
 
     @GetMapping("/buscarPorIdSeccion")
     public ResponseEntity<List<Producto>> getByIdSeccion(@RequestParam Integer idSeccion){
         return ResponseEntity.ok(productoService.getByIdSeccionTienda(idSeccion));
     }
 
+
     @GetMapping("/buscarPorIdTienda")
     public ResponseEntity<List<Producto>> getByIdTienda(@RequestParam Integer idTienda){
         return ResponseEntity.ok(productoService.getByIdTienda(idTienda));
     }
 
+
     @GetMapping("/buscarPorIdProducto")
     public ResponseEntity<ProductoConImagenDTO> getByIdProducto(@RequestParam Integer idProducto){
         return ResponseEntity.ok(productoService.getByIdProducto(idProducto));
     }
+
 
     @GetMapping("/buscarPorNombreCategoria")
     public ResponseEntity<List<Producto>> getByNombreCategoria(@RequestParam String categoria){

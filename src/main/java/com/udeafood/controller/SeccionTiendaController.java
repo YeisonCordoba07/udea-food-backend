@@ -16,10 +16,14 @@ public class SeccionTiendaController {
 
     private final SeccionTiendaService seccionTiendaService;
 
+
+
+
     @GetMapping("/getAll")
     public ResponseEntity<List<SeccionTienda>> getAll(){
         return ResponseEntity.ok( seccionTiendaService.getAll());
     }
+
 
     @GetMapping("/buscarPorIdTienda")
     public ResponseEntity<List<SeccionTienda>> getByTiendaId(@RequestParam Integer idTienda){

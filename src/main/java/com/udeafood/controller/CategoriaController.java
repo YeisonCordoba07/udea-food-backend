@@ -20,6 +20,8 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
 
+
+
     @GetMapping("/getAll")
     public ResponseEntity<List<Categoria>> getAll(){
         return ResponseEntity.ok(categoriaService.getAll());

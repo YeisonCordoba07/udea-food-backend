@@ -18,15 +18,10 @@ import java.util.List;
 public class ProductoConImagenDTO {
 
     private Integer idProducto;
-
     private String nombre;
-
     private String descripcion;
-
     private BigDecimal precio;
-
     private Boolean disponibilidad;
-
     private List<ImagenProducto> imagenProductos;
 
 }

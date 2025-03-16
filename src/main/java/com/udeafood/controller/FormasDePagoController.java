@@ -16,7 +16,10 @@ import java.util.List;
 @RequestMapping("/formasDePago")
 @RequiredArgsConstructor
 public class FormasDePagoController {
+
     private final FormasDePagoService formasDePagoService;
+
+
 
     @GetMapping("/getAll")
     public ResponseEntity<List<FormasDePago>> getAll(){

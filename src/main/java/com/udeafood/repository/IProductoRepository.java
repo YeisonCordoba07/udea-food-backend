@@ -30,4 +30,11 @@ public interface IProductoRepository extends JpaRepository<Producto, Integer> {
             "   OR LOWER(c.nombre) LIKE LOWER(CONCAT('%', :categoria))")
     List<Producto> findAllByNombreCategoria(@PathVariable("categoria") String categoria);
 
+
+    @Query("SELECT p FROM Producto p " +
+            "WHERE LOWER(p.nombre) LIKE LOWER(CONCAT('%', :producto, '%')) " +
+            "   OR LOWER(p.nombre) LIKE LOWER(CONCAT(:producto, '%')) " +
+            "   OR LOWER(p.nombre) LIKE LOWER(CONCAT('%', :producto))")
+    List<Producto> findAllByNombre(@PathVariable("producto") String producto);
+
 }

@@ -27,4 +27,9 @@ public class ImagenProductoController {
         return ResponseEntity.ok( imagenProductoService.getAll());
     }
 
+    @GetMapping("/buscarPorIdProducto")
+    public ResponseEntity<List<ImagenProducto>> buscarPorIdProducto(Integer idProducto){
+        return ResponseEntity.ok( imagenProductoService.getAllByIdProducto(idProducto));
+    }
+
 }

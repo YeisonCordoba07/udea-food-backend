@@ -22,4 +22,7 @@ public class UsuarioService {
         return iUsuarioRepository.findAll();
     }
 
+    public Usuario getUsuarioById(Integer id) {
+        return iUsuarioRepository.findById(id).orElse(null);
+    }
 }

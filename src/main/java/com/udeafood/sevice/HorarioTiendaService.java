@@ -14,9 +14,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HorarioTiendaService {
 
-        private final IHorarioTiendaRepository iHorarioTiendaRepository;
+    private final IHorarioTiendaRepository iHorarioTiendaRepository;
 
-        public List<HorarioTienda> getAll(){
-            return iHorarioTiendaRepository.findAll();
-        }
+    public List<HorarioTienda> getAll() {
+        return iHorarioTiendaRepository.findAll();
+    }
+
+    public List<HorarioTienda> getByIdTienda(Integer idTienda) {
+        return iHorarioTiendaRepository.findAllByTienda_IdTienda(idTienda);
+    }
 }

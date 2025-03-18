@@ -70,4 +70,7 @@ public class ProductoService {
     }
 
 
+    public List<Producto> getByNombreProducto(String nombre) {
+        return iProductoRepository.findAllByNombre(nombre);
+    }
 }

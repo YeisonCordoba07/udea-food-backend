@@ -5,10 +5,7 @@ import com.udeafood.model.Usuario;
 import com.udeafood.sevice.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,10 @@ public class UsuarioController {
     @GetMapping("/getAll")
     public ResponseEntity<List<Usuario>> getAll() {
         return ResponseEntity.ok(usuarioService.getAll());
+    }
+
+    @GetMapping("/buscarPorId")
+    public ResponseEntity<Usuario> getUsuarioById(@RequestParam Integer id) {
+        return ResponseEntity.ok(usuarioService.getUsuarioById(id));
     }
 }

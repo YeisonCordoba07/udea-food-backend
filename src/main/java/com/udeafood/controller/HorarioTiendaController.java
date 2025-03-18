@@ -26,4 +26,9 @@ public class HorarioTiendaController {
     public ResponseEntity<List<HorarioTienda>> getAll(){
         return ResponseEntity.ok( horarioTiendaService.getAll());
     }
+
+    @GetMapping("/buscarPorIdTienda")
+    public ResponseEntity<List<HorarioTienda>> getByIdTienda(Integer idTienda){
+        return ResponseEntity.ok( horarioTiendaService.getByIdTienda(idTienda));
+    }
 }

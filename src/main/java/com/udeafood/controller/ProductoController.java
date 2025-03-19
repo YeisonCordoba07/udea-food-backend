@@ -29,13 +29,13 @@ public class ProductoController {
 
     @GetMapping("/buscarPorIdSeccion")
     public ResponseEntity<List<Producto>> getByIdSeccion(@RequestParam Integer idSeccion){
-        return ResponseEntity.ok(productoService.getByIdSeccionTienda(idSeccion));
+        return ResponseEntity.ok(productoService.getAllByIdSeccionTienda(idSeccion));
     }
 
 
     @GetMapping("/buscarPorIdTienda")
     public ResponseEntity<List<Producto>> getByIdTienda(@RequestParam Integer idTienda){
-        return ResponseEntity.ok(productoService.getByIdTienda(idTienda));
+        return ResponseEntity.ok(productoService.getAllByIdTienda(idTienda));
     }
 
 

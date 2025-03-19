@@ -31,12 +31,12 @@ public class ProductoService {
     }
 
 
-    public List<Producto> getByIdSeccionTienda(Integer idSeccion){
+    public List<Producto> getAllByIdSeccionTienda(Integer idSeccion){
         return iProductoRepository.findBySeccionTienda_IdSeccionTienda(idSeccion);
     }
 
 
-    public List<Producto> getByIdTienda(Integer idTienda){
+    public List<Producto> getAllByIdTienda(Integer idTienda){
         return iProductoRepository.findAllByIdTienda(idTienda);
     }
 
@@ -49,10 +49,10 @@ public class ProductoService {
         }
         List<ImagenProducto> listImagenProducto = imagenProductoService.getAllByIdProducto(idProducto);
 
-        return getProductoConImagenDTO(producto1, listImagenProducto);
+        return productToDTO(producto1, listImagenProducto);
     }
 
-    private static ProductoConImagenDTO getProductoConImagenDTO(Optional<Producto> producto1, List<ImagenProducto> listImagenProducto) {
+    private static ProductoConImagenDTO productToDTO(Optional<Producto> producto1, List<ImagenProducto> listImagenProducto) {
         ProductoConImagenDTO productoConImagenDTO = new ProductoConImagenDTO();
 
         if(producto1.isEmpty()){

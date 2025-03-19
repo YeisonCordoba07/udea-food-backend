@@ -15,5 +15,5 @@ public interface ISeccionTiendaRepository extends JpaRepository<SeccionTienda, I
     @Query("SELECT s FROM SeccionTienda s JOIN s.tienda t "+
         "WHERE t.idTienda = :idTienda"
     )
-    List<SeccionTienda> findAllByIdTienda(@PathVariable("idTienda") Integer tiendaId);
+    List<SeccionTienda> findAllByIdTienda(@PathVariable("idTienda") Integer idTienda);
 }

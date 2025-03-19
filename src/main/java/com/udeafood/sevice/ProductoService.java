@@ -8,9 +8,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -49,6 +50,10 @@ public class ProductoService {
         }
         List<ImagenProducto> listImagenProducto = imagenProductoService.getAllByIdProducto(idProducto);
 
+
+        /* VERIFY
+        * is not necessary send DTO
+        * */
         return productToDTO(producto1, listImagenProducto);
     }
 
@@ -95,26 +100,52 @@ public class ProductoService {
 
         // Validate that selected categories exist
         List<Categoria> existingCategories = categoriaService.getAll();
-        List<Categoria> categoryList = productoDTO.getCategorias()
+        System.out.println("#############################################################");
+        System.out.println("EXISTIS CATEGORIES: "+ existingCategories);
+        /*List<Categoria> categoryList = productoDTO.getCategorias()
                 .stream()
                 .filter(existingCategories::contains)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+
+        List<Integer> existingCategoryIds = existingCategories.stream()
+                .map(Categoria::getIdCategoria)
+                .toList();
+
+        System.out.println("#############################################################");
+        System.out.println("IDF EXISTIS CATEGORIES: "+ existingCategoryIds);
+
+        List<Integer> categoryList = productoDTO.getCategorias().stream()
+                .filter(id -> existingCategoryIds.contains(id))
+                .toList();
+
+        System.out.println("#############################################################");
+        System.out.println("CATEGORY LIST: "+ categoryList);
 
         if (categoryList.size() != productoDTO.getCategorias().size()) {
             throw new IllegalArgumentException("Some categories do not exist. Error to create product");
         }
-        newProducto.setCategorias(categoryList);
+        List<Categoria> newCategoryList = new ArrayList<>();
+        for(Integer idCategoria : categoryList){
+            newCategoryList.add(categoriaService.getById(idCategoria));
+        }
+        for(Categoria categoria : newCategoryList){
+            System.out.println("#############################################################");
+            System.out.println("CATEGORIA: "+ categoria.getNombre());
+        }
+        newProducto.setCategorias(newCategoryList);
 
 
 
         // Validate that selected SeccionTienda exist and if not, create a default one
         List<SeccionTienda> existingSeccionTienda = seccionTiendaService.getByTiendaId(productoDTO.getIdTienda());
 
-        if(!existingSeccionTienda.contains(productoDTO.getSeccionTienda())){
-            throw new IllegalArgumentException("Selected SeccionTienda does not exist. Error to create product");
+        for(SeccionTienda seccionTienda : existingSeccionTienda){
+            System.out.println("#############################################################");
+            System.out.println("SECCION TIENDA: "+ seccionTienda.getNombre());
+        }
 
-        }else if(existingSeccionTienda.isEmpty()){
-
+        if (existingSeccionTienda.isEmpty()) {
+            // Create a default SeccionTienda if none exist
             SeccionTienda defaultSeccionTienda = new SeccionTienda();
             defaultSeccionTienda.setNombre("Productos");
 
@@ -122,37 +153,39 @@ public class ProductoService {
             auxTienda.setIdTienda(productoDTO.getIdTienda());
 
             defaultSeccionTienda.setTienda(auxTienda);
-            seccionTiendaService.save(defaultSeccionTienda);
-            newProducto.setSeccionTienda(productoDTO.getSeccionTienda());
+            SeccionTienda savedSeccionTienda = seccionTiendaService.save(defaultSeccionTienda);
+            newProducto.setSeccionTienda(savedSeccionTienda);
+        } else {
+            // Check if the selected SeccionTienda exists
+            boolean seccionExists = existingSeccionTienda.stream()
+                    .anyMatch(seccion -> (seccion.getIdSeccionTienda() == productoDTO.getIdSeccionTienda()));
 
+            if (!seccionExists) {
+                throw new IllegalArgumentException("Selected SeccionTienda does not exist. Error to create product");
+            }
 
-        }else{
-            newProducto.setSeccionTienda(productoDTO.getSeccionTienda());
-
+            // Set the existing SeccionTienda
+            SeccionTienda auxSeccionTienda = new SeccionTienda();
+            auxSeccionTienda.setIdSeccionTienda(productoDTO.getIdSeccionTienda());
+            auxSeccionTienda.setNombre("thing nombre");
+            newProducto.setSeccionTienda(auxSeccionTienda);
         }
 
 
 
         // Save the product
-        iProductoRepository.save(newProducto);
+        Producto savedProducto = iProductoRepository.save(newProducto);
 
 
         // If the product has images, save them
-        for(ImagenProducto imagenProducto : productoDTO.getImagenes()){
-
-            if(imagenProducto != null){
+        for(String enlaceImagen : productoDTO.getImagenes()){
 
                 ImagenProducto newImagenProducto = new ImagenProducto();
-                newImagenProducto.setEnlaceImagen(imagenProducto.getEnlaceImagen());
+                newImagenProducto.setEnlaceImagen(enlaceImagen);
 
-                Producto auxProducto = new Producto();
-                auxProducto.setIdProducto(newProducto.getIdProducto());
-
-                newImagenProducto.setProducto(auxProducto);
+                newImagenProducto.setProducto(savedProducto);
                 imagenProductoService.save(newImagenProducto);
 
-
-            }
         }
 
 

@@ -1,8 +1,6 @@
 package com.udeafood.DTO;
 
-import com.udeafood.model.Categoria;
-import com.udeafood.model.ImagenProducto;
-import com.udeafood.model.SeccionTienda;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +20,9 @@ public class ProductoDTO {
     private BigDecimal precio;
     private Boolean disponibilidad;
 
-    private List<ImagenProducto> imagenes;
-    private List<Categoria> categorias;
-    private SeccionTienda seccionTienda;
+    private List<String> imagenes;
+    private List<Integer> categorias;
+    private Integer idSeccionTienda;
 
     private Integer idTienda;
 }

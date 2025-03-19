@@ -21,10 +21,10 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
 
 
     @Query("SELECT t FROM Tienda t JOIN t.categorias c " +
-            "WHERE LOWER(c.nombre) LIKE LOWER(CONCAT('%', :categoria, '%')) " +
-            "   OR LOWER(c.nombre) LIKE LOWER(CONCAT(:categoria, '%')) " +
-            "   OR LOWER(c.nombre) LIKE LOWER(CONCAT('%', :categoria))")
-    List<Tienda> findTiendaByCategoria(@Param("categoria") String categoria);
+            "WHERE LOWER(c.nombre) LIKE LOWER(CONCAT('%', :nombreCategoria, '%')) " +
+            "   OR LOWER(c.nombre) LIKE LOWER(CONCAT(:nombreCategoria, '%')) " +
+            "   OR LOWER(c.nombre) LIKE LOWER(CONCAT('%', :nombreCategoria))")
+    List<Tienda> findTiendaByNombreCategoria(@Param("nombreCategoria") String nombreCategoria);
 
 
     List<Tienda> findAllByUsuario_IdUsuario(Integer idUsuario);

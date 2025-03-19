@@ -28,7 +28,7 @@ public class SeccionTiendaService {
     }
 
 
-    public void save(SeccionTienda defaultSeccionTienda) {
-        iSeccionTiendaRepository.save(defaultSeccionTienda);
+    public SeccionTienda save(SeccionTienda defaultSeccionTienda) {
+        return iSeccionTiendaRepository.save(defaultSeccionTienda);
     }
 }

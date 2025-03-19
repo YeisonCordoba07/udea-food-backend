@@ -21,4 +21,8 @@ public class CategoriaService {
     public List<Categoria> getAll(){
         return iCategoriaRepository.findAll();
     }
+
+    public Categoria getById(Integer idCategoria){
+        return iCategoriaRepository.findById(idCategoria).orElseThrow();
+    }
 }

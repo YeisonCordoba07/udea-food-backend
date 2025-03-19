@@ -102,24 +102,14 @@ public class ProductoService {
         List<Categoria> existingCategories = categoriaService.getAll();
         System.out.println("#############################################################");
         System.out.println("EXISTIS CATEGORIES: "+ existingCategories);
-        /*List<Categoria> categoryList = productoDTO.getCategorias()
-                .stream()
-                .filter(existingCategories::contains)
-                .collect(Collectors.toList());*/
 
         List<Integer> existingCategoryIds = existingCategories.stream()
                 .map(Categoria::getIdCategoria)
                 .toList();
 
-        System.out.println("#############################################################");
-        System.out.println("IDF EXISTIS CATEGORIES: "+ existingCategoryIds);
-
         List<Integer> categoryList = productoDTO.getCategorias().stream()
                 .filter(id -> existingCategoryIds.contains(id))
                 .toList();
-
-        System.out.println("#############################################################");
-        System.out.println("CATEGORY LIST: "+ categoryList);
 
         if (categoryList.size() != productoDTO.getCategorias().size()) {
             throw new IllegalArgumentException("Some categories do not exist. Error to create product");
@@ -128,21 +118,13 @@ public class ProductoService {
         for(Integer idCategoria : categoryList){
             newCategoryList.add(categoriaService.getById(idCategoria));
         }
-        for(Categoria categoria : newCategoryList){
-            System.out.println("#############################################################");
-            System.out.println("CATEGORIA: "+ categoria.getNombre());
-        }
+
         newProducto.setCategorias(newCategoryList);
 
 
 
         // Validate that selected SeccionTienda exist and if not, create a default one
         List<SeccionTienda> existingSeccionTienda = seccionTiendaService.getByTiendaId(productoDTO.getIdTienda());
-
-        for(SeccionTienda seccionTienda : existingSeccionTienda){
-            System.out.println("#############################################################");
-            System.out.println("SECCION TIENDA: "+ seccionTienda.getNombre());
-        }
 
         if (existingSeccionTienda.isEmpty()) {
             // Create a default SeccionTienda if none exist

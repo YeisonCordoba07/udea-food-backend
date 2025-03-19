@@ -26,4 +26,9 @@ public class SeccionTiendaService {
     public List<SeccionTienda> getByTiendaId(Integer idTienda){
         return iSeccionTiendaRepository.findAllByIdTienda(idTienda);
     }
+
+
+    public void save(SeccionTienda defaultSeccionTienda) {
+        iSeccionTiendaRepository.save(defaultSeccionTienda);
+    }
 }

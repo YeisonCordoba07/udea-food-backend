@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -88,18 +89,25 @@ public class ProductoService {
         newProducto.setPrecio(productoDTO.getPrecio());
         newProducto.setDisponibilidad(productoDTO.getDisponibilidad());
 
-        newProducto.setImagenesProducto(productoDTO.getImagenes());
+        //newProducto.setImagenesProducto(productoDTO.getImagenes());
 
-        List<Categoria> categoryList = productoDTO.getCategorias();
+
+
+        // Validate that selected categories exist
         List<Categoria> existingCategories = categoriaService.getAll();
-        for (Categoria category : categoryList) {
-            if (!existingCategories.contains(category)) {
-                throw new IllegalArgumentException("Category " + category.getNombre() + " does not exist. Error to create product");
-            }
+        List<Categoria> categoryList = productoDTO.getCategorias()
+                .stream()
+                .filter(existingCategories::contains)
+                .collect(Collectors.toList());
+
+        if (categoryList.size() != productoDTO.getCategorias().size()) {
+            throw new IllegalArgumentException("Some categories do not exist. Error to create product");
         }
         newProducto.setCategorias(categoryList);
 
 
+
+        // Validate that selected SeccionTienda exist and if not, create a default one
         List<SeccionTienda> existingSeccionTienda = seccionTiendaService.getByTiendaId(productoDTO.getIdTienda());
 
         if(!existingSeccionTienda.contains(productoDTO.getSeccionTienda())){
@@ -107,13 +115,15 @@ public class ProductoService {
 
         }else if(existingSeccionTienda.isEmpty()){
 
+            SeccionTienda defaultSeccionTienda = new SeccionTienda();
+            defaultSeccionTienda.setNombre("Productos");
+
             Tienda auxTienda = new Tienda();
             auxTienda.setIdTienda(productoDTO.getIdTienda());
 
-            SeccionTienda defaultSeccionTienda = new SeccionTienda();
-            defaultSeccionTienda.setIdSeccionTienda(1);
-            defaultSeccionTienda.setNombre("Productos");
             defaultSeccionTienda.setTienda(auxTienda);
+            seccionTiendaService.save(defaultSeccionTienda);
+            newProducto.setSeccionTienda(productoDTO.getSeccionTienda());
 
 
         }else{
@@ -121,6 +131,13 @@ public class ProductoService {
 
         }
 
+
+
+        // Save the product
+        iProductoRepository.save(newProducto);
+
+
+        // If the product has images, save them
         for(ImagenProducto imagenProducto : productoDTO.getImagenes()){
 
             if(imagenProducto != null){
@@ -139,6 +156,5 @@ public class ProductoService {
         }
 
 
-        iProductoRepository.save(newProducto);
     }
 }

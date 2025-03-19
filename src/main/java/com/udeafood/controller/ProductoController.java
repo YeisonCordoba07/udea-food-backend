@@ -1,9 +1,11 @@
 package com.udeafood.controller;
 
 import com.udeafood.DTO.ProductoConImagenDTO;
+import com.udeafood.DTO.ProductoDTO;
 import com.udeafood.model.Producto;
 import com.udeafood.sevice.ProductoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +54,19 @@ public class ProductoController {
     @GetMapping("/buscarPorNombreProducto")
     public ResponseEntity<List<Producto>> getByNombreProducto(@RequestParam String nombre){
         return ResponseEntity.ok(productoService.getByNombreProducto(nombre));
+    }
+
+
+
+    @PostMapping("/save")
+    public ResponseEntity<?> save(@RequestBody ProductoDTO productoDTO) {
+        try {
+            productoService.save(productoDTO);
+            return ResponseEntity.status(201).body("Guardado con exito"); // Retorna el producto creado con ID
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage()); // Manejo de error si hay categorías inválidas
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno del servidor");
+        }
     }
 }

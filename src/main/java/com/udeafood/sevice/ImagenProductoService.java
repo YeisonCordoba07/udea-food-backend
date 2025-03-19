@@ -26,4 +26,8 @@ public class ImagenProductoService {
     public List<ImagenProducto> getAllByIdProducto(Integer idProducto){
         return iImagenProductoRepository.findAllByProducto_IdProducto(idProducto);
     }
+
+    public void save(ImagenProducto imagenProducto){
+        iImagenProductoRepository.save(imagenProducto);
+    }
 }

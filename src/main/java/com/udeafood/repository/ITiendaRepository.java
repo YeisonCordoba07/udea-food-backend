@@ -29,4 +29,11 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
 
     List<Tienda> findAllByUsuario_IdUsuario(Integer idUsuario);
 
+    @Query("SELECT DISTINCT t FROM Tienda t " +
+            "LEFT JOIN FETCH t.secciones " +
+            "WHERE t.idTienda = :idTienda")
+    Tienda findTiendaWithSecciones(@Param("idTienda") Integer idTienda);
+
+
+
 }

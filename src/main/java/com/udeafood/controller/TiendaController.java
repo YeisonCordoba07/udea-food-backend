@@ -1,6 +1,7 @@
 package com.udeafood.controller;
 
 
+import com.udeafood.DTO.PerfilTiendaDTO;
 import com.udeafood.model.Tienda;
 import com.udeafood.sevice.TiendaService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class TiendaController {
     @GetMapping("/buscarPorId")
     public ResponseEntity<Tienda> getTiendaById(@RequestParam Integer id){
         return ResponseEntity.ok(tiendaService.getTiendaById(id));
+    }
+
+    @GetMapping("/perfilTienda")
+    public ResponseEntity<PerfilTiendaDTO> getPerfilTienda(@RequestParam Integer id){
+        return ResponseEntity.ok(tiendaService.getPerfilTienda(id));
     }
 
 

@@ -107,16 +107,16 @@ public class ProductoService {
                 .map(Categoria::getIdCategoria)
                 .toList();
 
-        List<Integer> categoryList = productoDTO.getCategorias().stream()
-                .filter(id -> existingCategoryIds.contains(id))
+        List<Categoria> categoryList = productoDTO.getCategorias().stream()
+                .filter(categoria -> existingCategoryIds.contains(categoria.getIdCategoria()))
                 .toList();
 
         if (categoryList.size() != productoDTO.getCategorias().size()) {
             throw new IllegalArgumentException("Some categories do not exist. Error to create product");
         }
         List<Categoria> newCategoryList = new ArrayList<>();
-        for(Integer idCategoria : categoryList){
-            newCategoryList.add(categoriaService.getById(idCategoria));
+        for(Categoria c : categoryList){
+            newCategoryList.add(categoriaService.getById(c.getIdCategoria()));
         }
 
         newProducto.setCategorias(newCategoryList);

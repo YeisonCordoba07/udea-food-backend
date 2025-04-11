@@ -21,10 +21,15 @@ public class TiendaController {
 
 
 
-    @GetMapping("/getAll")
+    @GetMapping("/obtenerTodas")
     public ResponseEntity<List<Tienda>> getAll(){
 
         return ResponseEntity.ok( tiendaService.getAll());
+    }
+
+    @GetMapping("/obtenerTodasPorTipo")
+    public ResponseEntity<List<Tienda>> getAllByType(@RequestParam String tipoTienda){
+        return ResponseEntity.ok(tiendaService.getAllByType(tipoTienda));
     }
 
 

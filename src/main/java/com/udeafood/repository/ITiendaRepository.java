@@ -2,6 +2,7 @@ package com.udeafood.repository;
 
 
 import com.udeafood.model.Tienda;
+import com.udeafood.model.util.TipoTienda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,6 +34,8 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
             "LEFT JOIN FETCH t.secciones " +
             "WHERE t.idTienda = :idTienda")
     Tienda findTiendaWithSecciones(@Param("idTienda") Integer idTienda);
+
+    List <Tienda> findAllByTipoTienda(TipoTienda tipoTienda);
 
 
 

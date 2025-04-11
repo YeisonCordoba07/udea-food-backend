@@ -6,6 +6,7 @@ import com.udeafood.DTO.ProductoDTO;
 import com.udeafood.DTO.SeccionTiendaDTO;
 import com.udeafood.model.Categoria;
 import com.udeafood.model.Tienda;
+import com.udeafood.model.util.TipoTienda;
 import com.udeafood.repository.ITiendaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,28 @@ public class TiendaService {
     }
 
 
+
+    public List<Tienda> getAllByType(String tipoTienda) {
+
+        if(tipoTienda.equalsIgnoreCase("FORMAL")){
+            return iTiendaRepository.findAllByTipoTienda(TipoTienda.FORMAL);
+
+        }else if(tipoTienda.equalsIgnoreCase("INFORMAL")){
+            return iTiendaRepository.findAllByTipoTienda(TipoTienda.INFORMAL);
+
+        }else{
+            throw new IllegalArgumentException("Tipo de tienda no válida");
+        }
+
+    }
+
+
+
     public Tienda getTiendaById(Integer id){
         return iTiendaRepository.findById(id).orElse(null);
     }
+
+
 
     public PerfilTiendaDTO getPerfilTienda(Integer id) {
         Tienda tienda = iTiendaRepository.findById(id).orElse(null);
@@ -110,4 +130,7 @@ public class TiendaService {
     public List<Tienda> getTiendaByIdUsuario(Integer idUsuario){
         return iTiendaRepository.findAllByUsuario_IdUsuario(idUsuario);
     }
+
+
+
 }

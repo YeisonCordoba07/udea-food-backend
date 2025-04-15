@@ -1,7 +1,7 @@
 package com.udeafood.DTO;
 
-
 import com.udeafood.model.Categoria;
+import com.udeafood.model.ImagenProducto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,15 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductoDTO {
+
     private Integer idProducto;
     private String nombre;
     private String descripcion;
     private BigDecimal precio;
     private Boolean disponibilidad;
 
-    private List<String> imagenes;
     private List<Categoria> categorias;
-    private Integer idSeccionTienda;
+    private List<ImagenProducto> imagenes;
 
     private Integer idTienda;
+
 }

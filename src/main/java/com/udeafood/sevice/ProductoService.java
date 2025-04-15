@@ -2,6 +2,7 @@ package com.udeafood.sevice;
 
 import com.udeafood.DTO.ProductoConImagenDTO;
 import com.udeafood.DTO.ProductoDTO;
+import com.udeafood.DTO.ProductoRequestDTO;
 import com.udeafood.model.*;
 import com.udeafood.repository.IProductoRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,7 @@ public class ProductoService {
     private final ImagenProductoService imagenProductoService;
     private final CategoriaService categoriaService;
     private final SeccionTiendaService seccionTiendaService;
+    private final TiendaService tiendaService;
 
 
 
@@ -54,10 +56,11 @@ public class ProductoService {
         /* VERIFY
         * is not necessary send DTO
         * */
-        return productToDTO(producto1, listImagenProducto);
+        return productoToProductoConImagenDTO(producto1, listImagenProducto);
     }
 
-    private static ProductoConImagenDTO productToDTO(Optional<Producto> producto1, List<ImagenProducto> listImagenProducto) {
+
+    private static ProductoConImagenDTO productoToProductoConImagenDTO(Optional<Producto> producto1, List<ImagenProducto> listImagenProducto) {
         ProductoConImagenDTO productoConImagenDTO = new ProductoConImagenDTO();
 
         if(producto1.isEmpty()){
@@ -78,21 +81,45 @@ public class ProductoService {
     }
 
 
-    public List<Producto> getByNombreProducto(String nombre) {
-        return iProductoRepository.findAllByNombre(nombre);
+    public List<ProductoDTO> getByNombreProducto(String nombre) {
+        List<Producto> listaProducto = iProductoRepository.findAllByNombre(nombre);
+        List<ProductoDTO> listaProductoDTO = new ArrayList<>();
+        for (Producto p : listaProducto) {
+            ProductoDTO pDto = productoToProductoDTO(p);
+            listaProductoDTO.add(pDto);
+        }
+        return listaProductoDTO;
+    }
+
+    private ProductoDTO productoToProductoDTO(Producto producto) {
+        ProductoDTO productoDTO = new ProductoDTO();
+        productoDTO.setIdProducto(producto.getIdProducto());
+        productoDTO.setNombre(producto.getNombre());
+        productoDTO.setDescripcion(producto.getDescripcion());
+        productoDTO.setPrecio(producto.getPrecio());
+        productoDTO.setDisponibilidad(producto.getDisponibilidad());
+        productoDTO.setCategorias(producto.getCategorias());
+        productoDTO.setImagenes(producto.getImagenesProducto());
+        productoDTO.setIdTienda(tiendaService.getIdTiendaByIdProducto(producto.getIdProducto()));
+        return productoDTO;
     }
 
 
 
 
 
-    public void save(ProductoDTO productoDTO) {
+
+
+
+
+
+    public void save(ProductoRequestDTO productoRequestDTO) {
 
         Producto newProducto = new Producto();
-        newProducto.setNombre(productoDTO.getNombre());
-        newProducto.setDescripcion(productoDTO.getDescripcion());
-        newProducto.setPrecio(productoDTO.getPrecio());
-        newProducto.setDisponibilidad(productoDTO.getDisponibilidad());
+        newProducto.setNombre(productoRequestDTO.getNombre());
+        newProducto.setDescripcion(productoRequestDTO.getDescripcion());
+        newProducto.setPrecio(productoRequestDTO.getPrecio());
+        newProducto.setDisponibilidad(productoRequestDTO.getDisponibilidad());
 
         //newProducto.setImagenesProducto(productoDTO.getImagenes());
 
@@ -107,11 +134,11 @@ public class ProductoService {
                 .map(Categoria::getIdCategoria)
                 .toList();
 
-        List<Categoria> categoryList = productoDTO.getCategorias().stream()
+        List<Categoria> categoryList = productoRequestDTO.getCategorias().stream()
                 .filter(categoria -> existingCategoryIds.contains(categoria.getIdCategoria()))
                 .toList();
 
-        if (categoryList.size() != productoDTO.getCategorias().size()) {
+        if (categoryList.size() != productoRequestDTO.getCategorias().size()) {
             throw new IllegalArgumentException("Some categories do not exist. Error to create product");
         }
         List<Categoria> newCategoryList = new ArrayList<>();
@@ -124,7 +151,7 @@ public class ProductoService {
 
 
         // Validate that selected SeccionTienda exist and if not, create a default one
-        List<SeccionTienda> existingSeccionTienda = seccionTiendaService.getByTiendaId(productoDTO.getIdTienda());
+        List<SeccionTienda> existingSeccionTienda = seccionTiendaService.getByTiendaId(productoRequestDTO.getIdTienda());
 
         if (existingSeccionTienda.isEmpty()) {
             // Create a default SeccionTienda if none exist
@@ -132,7 +159,7 @@ public class ProductoService {
             defaultSeccionTienda.setNombre("Productos");
 
             Tienda auxTienda = new Tienda();
-            auxTienda.setIdTienda(productoDTO.getIdTienda());
+            auxTienda.setIdTienda(productoRequestDTO.getIdTienda());
 
             defaultSeccionTienda.setTienda(auxTienda);
             SeccionTienda savedSeccionTienda = seccionTiendaService.save(defaultSeccionTienda);
@@ -140,7 +167,7 @@ public class ProductoService {
         } else {
             // Check if the selected SeccionTienda exists
             boolean seccionExists = existingSeccionTienda.stream()
-                    .anyMatch(seccion -> (seccion.getIdSeccionTienda() == productoDTO.getIdSeccionTienda()));
+                    .anyMatch(seccion -> (seccion.getIdSeccionTienda() == productoRequestDTO.getIdSeccionTienda()));
 
             if (!seccionExists) {
                 throw new IllegalArgumentException("Selected SeccionTienda does not exist. Error to create product");
@@ -148,7 +175,7 @@ public class ProductoService {
 
             // Set the existing SeccionTienda
             SeccionTienda auxSeccionTienda = new SeccionTienda();
-            auxSeccionTienda.setIdSeccionTienda(productoDTO.getIdSeccionTienda());
+            auxSeccionTienda.setIdSeccionTienda(productoRequestDTO.getIdSeccionTienda());
             auxSeccionTienda.setNombre("thing nombre");
             newProducto.setSeccionTienda(auxSeccionTienda);
         }
@@ -160,7 +187,7 @@ public class ProductoService {
 
 
         // If the product has images, save them
-        for(String enlaceImagen : productoDTO.getImagenes()){
+        for(String enlaceImagen : productoRequestDTO.getImagenes()){
 
                 ImagenProducto newImagenProducto = new ImagenProducto();
                 newImagenProducto.setEnlaceImagen(enlaceImagen);

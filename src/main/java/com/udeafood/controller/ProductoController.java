@@ -2,6 +2,7 @@ package com.udeafood.controller;
 
 import com.udeafood.DTO.ProductoConImagenDTO;
 import com.udeafood.DTO.ProductoDTO;
+import com.udeafood.DTO.ProductoRequestDTO;
 import com.udeafood.model.Producto;
 import com.udeafood.sevice.ProductoService;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class ProductoController {
     }
 
     @GetMapping("/buscarPorNombreProducto")
-    public ResponseEntity<List<Producto>> getByNombreProducto(@RequestParam String nombre){
+    public ResponseEntity<List<ProductoDTO>> getByNombreProducto(@RequestParam String nombre){
         return ResponseEntity.ok(productoService.getByNombreProducto(nombre));
     }
 
@@ -60,9 +61,9 @@ public class ProductoController {
 
     // POST ------------------------------------------------------------------------------
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody ProductoDTO productoDTO) {
+    public ResponseEntity<?> save(@RequestBody ProductoRequestDTO productoRequestDTO) {
         try {
-            productoService.save(productoDTO);
+            productoService.save(productoRequestDTO);
             return ResponseEntity.status(201).body("Guardado con exito");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());

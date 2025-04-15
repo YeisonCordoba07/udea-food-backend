@@ -2,7 +2,7 @@ package com.udeafood.sevice;
 
 
 import com.udeafood.DTO.PerfilTiendaDTO;
-import com.udeafood.DTO.ProductoDTO;
+import com.udeafood.DTO.ProductoRequestDTO;
 import com.udeafood.DTO.SeccionTiendaDTO;
 import com.udeafood.model.Categoria;
 import com.udeafood.model.Tienda;
@@ -84,7 +84,7 @@ public class TiendaService {
             sDto.setNombre(seccion.getNombre());
             sDto.setProductos(
                     seccion.getProductos().stream().map(producto -> {
-                        ProductoDTO pDto = new ProductoDTO();
+                        ProductoRequestDTO pDto = new ProductoRequestDTO();
                         pDto.setIdProducto(producto.getIdProducto());
                         pDto.setNombre(producto.getNombre());
                         pDto.setDescripcion(producto.getDescripcion());
@@ -131,6 +131,12 @@ public class TiendaService {
         return iTiendaRepository.findAllByUsuario_IdUsuario(idUsuario);
     }
 
-
+    public Integer getIdTiendaByIdProducto(Integer idProducto){
+        Tienda tienda = iTiendaRepository.findBySecciones_Productos_IdProducto(idProducto);
+        if(tienda != null) {
+            return tienda.getIdTienda();
+        }
+        return null;
+    }
 
 }

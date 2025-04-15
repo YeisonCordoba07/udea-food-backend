@@ -37,6 +37,8 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
 
     List <Tienda> findAllByTipoTienda(TipoTienda tipoTienda);
 
+    Tienda findBySecciones_Productos_IdProducto(Integer idProducto);
+
 
 
 }

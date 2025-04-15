@@ -61,4 +61,9 @@ public class TiendaController {
         return ResponseEntity.ok(tiendaService.getTiendaByIdUsuario(idUsuario));
     }
 
+    @GetMapping("/buscarPorIdProducto")
+    public ResponseEntity<Integer> getTiendaByIdProducto(@RequestParam Integer idProducto){
+        return ResponseEntity.ok(tiendaService.getIdTiendaByIdProducto(idProducto));
+    }
+
 }

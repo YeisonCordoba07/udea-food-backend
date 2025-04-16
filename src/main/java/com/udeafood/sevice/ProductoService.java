@@ -1,8 +1,8 @@
 package com.udeafood.sevice;
 
-import com.udeafood.DTO.ProductoConImagenDTO;
 import com.udeafood.DTO.ProductoDTO;
 import com.udeafood.DTO.ProductoRequestDTO;
+import com.udeafood.mapper.ProductoMapper;
 import com.udeafood.model.*;
 import com.udeafood.repository.IProductoRepository;
 import jakarta.transaction.Transactional;
@@ -24,91 +24,42 @@ public class ProductoService {
     private final ImagenProductoService imagenProductoService;
     private final CategoriaService categoriaService;
     private final SeccionTiendaService seccionTiendaService;
-    private final TiendaService tiendaService;
+    private final ProductoMapper productoMapper;
 
 
 
 
-    public List<Producto> getAll(){
-        return iProductoRepository.findAll();
+    public List<ProductoDTO> getAll(){
+        return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAll());
     }
 
 
-    public List<Producto> getAllByIdSeccionTienda(Integer idSeccion){
-        return iProductoRepository.findBySeccionTienda_IdSeccionTienda(idSeccion);
+    public List<ProductoDTO> getAllByIdSeccionTienda(Integer idSeccion){
+        return productoMapper.listProductoToListProductoDTO(iProductoRepository.findBySeccionTienda_IdSeccionTienda(idSeccion));
     }
 
 
-    public List<Producto> getAllByIdTienda(Integer idTienda){
-        return iProductoRepository.findAllByIdTienda(idTienda);
+    public List<ProductoDTO> getAllByIdTienda(Integer idTienda){
+        return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByIdTienda(idTienda));
     }
 
 
-    public ProductoConImagenDTO getByIdProducto(Integer idProducto){
+    public ProductoDTO getByIdProducto(Integer idProducto){
         Optional<Producto> producto1 = iProductoRepository.findById(idProducto);
 
-        if (producto1.isEmpty()) {
-            return null; // Return empty object
-        }
-        List<ImagenProducto> listImagenProducto = imagenProductoService.getAllByIdProducto(idProducto);
-
-
-        /* VERIFY
-        * is not necessary send DTO
-        * */
-        return productoToProductoConImagenDTO(producto1, listImagenProducto);
+        // Return empty object
+        return producto1.map(productoMapper::productoToProductoDTO).orElse(null);
     }
 
 
-    private static ProductoConImagenDTO productoToProductoConImagenDTO(Optional<Producto> producto1, List<ImagenProducto> listImagenProducto) {
-        ProductoConImagenDTO productoConImagenDTO = new ProductoConImagenDTO();
-
-        if(producto1.isEmpty()){
-            return null;
-        }
-        productoConImagenDTO.setIdProducto(producto1.get().getIdProducto());
-        productoConImagenDTO.setNombre(producto1.get().getNombre());
-        productoConImagenDTO.setDescripcion(producto1.get().getDescripcion());
-        productoConImagenDTO.setPrecio(producto1.get().getPrecio());
-        productoConImagenDTO.setDisponibilidad(producto1.get().getDisponibilidad());
-        productoConImagenDTO.setImagenProductos(listImagenProducto);
-        return productoConImagenDTO;
-    }
-
-
-    public List<Producto> getByNombreCategoria(String categoria){
-        return iProductoRepository.findAllByNombreCategoria(categoria);
+    public List<ProductoDTO> getByNombreCategoria(String categoria){
+        return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombreCategoria(categoria));
     }
 
 
     public List<ProductoDTO> getByNombreProducto(String nombre) {
-        List<Producto> listaProducto = iProductoRepository.findAllByNombre(nombre);
-        List<ProductoDTO> listaProductoDTO = new ArrayList<>();
-        for (Producto p : listaProducto) {
-            ProductoDTO pDto = productoToProductoDTO(p);
-            listaProductoDTO.add(pDto);
-        }
-        return listaProductoDTO;
+        return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombre(nombre));
     }
-
-    private ProductoDTO productoToProductoDTO(Producto producto) {
-        ProductoDTO productoDTO = new ProductoDTO();
-        productoDTO.setIdProducto(producto.getIdProducto());
-        productoDTO.setNombre(producto.getNombre());
-        productoDTO.setDescripcion(producto.getDescripcion());
-        productoDTO.setPrecio(producto.getPrecio());
-        productoDTO.setDisponibilidad(producto.getDisponibilidad());
-        productoDTO.setCategorias(producto.getCategorias());
-        productoDTO.setImagenes(producto.getImagenesProducto());
-        productoDTO.setIdTienda(tiendaService.getIdTiendaByIdProducto(producto.getIdProducto()));
-        return productoDTO;
-    }
-
-
-
-
-
-
 
 
 

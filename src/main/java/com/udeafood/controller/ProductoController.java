@@ -1,9 +1,7 @@
 package com.udeafood.controller;
 
-import com.udeafood.DTO.ProductoConImagenDTO;
 import com.udeafood.DTO.ProductoDTO;
 import com.udeafood.DTO.ProductoRequestDTO;
-import com.udeafood.model.Producto;
 import com.udeafood.sevice.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,31 +21,31 @@ public class ProductoController {
 
     // GET -------------------------------------------------------------------------------
     @GetMapping("/getAll")
-    public ResponseEntity<List<Producto>> getAll(){
+    public ResponseEntity<List<ProductoDTO>> getAll(){
         return ResponseEntity.ok( productoService.getAll());
     }
 
 
     @GetMapping("/buscarPorIdSeccion")
-    public ResponseEntity<List<Producto>> getByIdSeccion(@RequestParam Integer idSeccion){
+    public ResponseEntity<List<ProductoDTO>> getByIdSeccion(@RequestParam Integer idSeccion){
         return ResponseEntity.ok(productoService.getAllByIdSeccionTienda(idSeccion));
     }
 
 
     @GetMapping("/buscarPorIdTienda")
-    public ResponseEntity<List<Producto>> getByIdTienda(@RequestParam Integer idTienda){
+    public ResponseEntity<List<ProductoDTO>> getByIdTienda(@RequestParam Integer idTienda){
         return ResponseEntity.ok(productoService.getAllByIdTienda(idTienda));
     }
 
 
     @GetMapping("/buscarPorIdProducto")
-    public ResponseEntity<ProductoConImagenDTO> getByIdProducto(@RequestParam Integer idProducto){
+    public ResponseEntity<ProductoDTO> getByIdProducto(@RequestParam Integer idProducto){
         return ResponseEntity.ok(productoService.getByIdProducto(idProducto));
     }
 
 
     @GetMapping("/buscarPorNombreCategoria")
-    public ResponseEntity<List<Producto>> getByNombreCategoria(@RequestParam String categoria){
+    public ResponseEntity<List<ProductoDTO>> getByNombreCategoria(@RequestParam String categoria){
         return ResponseEntity.ok(productoService.getByNombreCategoria(categoria));
     }
 

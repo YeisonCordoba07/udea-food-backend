@@ -85,16 +85,16 @@ public class ProductoService {
                 .map(Categoria::getIdCategoria)
                 .toList();
 
-        List<Categoria> categoryList = productoRequestDTO.getCategorias().stream()
-                .filter(categoria -> existingCategoryIds.contains(categoria.getIdCategoria()))
+        List<Integer> categoryList = productoRequestDTO.getCategorias().stream()
+                .filter(categoria -> existingCategoryIds.contains(categoria))
                 .toList();
 
         if (categoryList.size() != productoRequestDTO.getCategorias().size()) {
             throw new IllegalArgumentException("Some categories do not exist. Error to create product");
         }
         List<Categoria> newCategoryList = new ArrayList<>();
-        for(Categoria c : categoryList){
-            newCategoryList.add(categoriaService.getById(c.getIdCategoria()));
+        for(int c : categoryList){
+            newCategoryList.add(categoriaService.getById(c));
         }
 
         newProducto.setCategorias(newCategoryList);
@@ -113,7 +113,7 @@ public class ProductoService {
             auxTienda.setIdTienda(productoRequestDTO.getIdTienda());
 
             defaultSeccionTienda.setTienda(auxTienda);
-            SeccionTienda savedSeccionTienda = seccionTiendaService.save(defaultSeccionTienda);
+            SeccionTienda savedSeccionTienda = seccionTiendaService.saveDefault(defaultSeccionTienda);
             newProducto.setSeccionTienda(savedSeccionTienda);
         } else {
             // Check if the selected SeccionTienda exists

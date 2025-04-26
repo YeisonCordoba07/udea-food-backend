@@ -12,5 +12,5 @@ import java.util.List;
 public class SeccionTiendaDTO {
     private Integer idSeccionTienda;
     private String nombre;
-    private List<ProductoRequestDTO> productos;
+    private List<ProductoResponseDTO> productos;
 }

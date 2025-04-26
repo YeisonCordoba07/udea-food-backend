@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -30,7 +31,7 @@ public class ProductoMapper {
     public List<ProductoDTO> listProductoToListProductoDTO(List<Producto> listaProducto){
 
         if(listaProducto.isEmpty()){
-            return null;
+            return Collections.emptyList();
         }
         List<ProductoDTO> listaProductoDTO = new ArrayList<>();
         for(Producto p: listaProducto){

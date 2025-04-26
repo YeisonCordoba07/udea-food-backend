@@ -39,6 +39,10 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
 
     Tienda findBySecciones_Productos_IdProducto(Integer idProducto);
 
+    Tienda findByUsuario_Usuario(String usuario);
+
+    List<Tienda> findAllByUsuario_Usuario(String usuario);
+
 
 
 }

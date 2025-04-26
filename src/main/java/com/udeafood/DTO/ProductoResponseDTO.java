@@ -1,6 +1,5 @@
 package com.udeafood.DTO;
 
-
 import com.udeafood.model.Categoria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,12 +9,11 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductoRequestDTO {
+public class ProductoResponseDTO {
     private Integer idProducto;
     private String nombre;
     private String descripcion;
@@ -23,7 +21,7 @@ public class ProductoRequestDTO {
     private Boolean disponibilidad;
 
     private List<String> imagenes;
-    private List<Integer> categorias;
+    private List<Categoria> categorias;
     private Integer idSeccionTienda;
 
     private Integer idTienda;

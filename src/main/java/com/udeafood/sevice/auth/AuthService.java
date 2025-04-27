@@ -1,8 +1,11 @@
 package com.udeafood.sevice.auth;
 
-import com.udeafood.DTO.AuthResponse;
+import com.udeafood.DTO.auth.AccountInfo;
+import com.udeafood.DTO.auth.AuthResponse;
 import com.udeafood.DTO.LoginRequest;
 import com.udeafood.DTO.UsuarioDTO;
+import com.udeafood.DTO.auth.TiendaInfo;
+import com.udeafood.DTO.auth.UsuarioPartialInfo;
 import com.udeafood.jwt.JwtService;
 import com.udeafood.model.Rol;
 import com.udeafood.model.Usuario;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,20 +62,50 @@ public class AuthService {
 
 
     public AuthResponse login(LoginRequest loginRequestDTO) {
+        // Autenticar al usuario
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDTO.getUsername(),
                         loginRequestDTO.getPassword())
         );
 
-        UserDetails userDetails = iUsuarioRepository.findByUsuario(loginRequestDTO.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found -- AuthService"));
+        // Recuperar detalles del usuario
+        Usuario usuario = iUsuarioRepository.findByUsuario(loginRequestDTO.getUsername())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado -- AuthService"));
 
-        String token = jwtService.getToken(userDetails);
+        // Generar token JWT
+        String token = jwtService.getToken(usuario);
+
+        // Mapear información parcial del usuario
+        UsuarioPartialInfo usuarioInfo = new UsuarioPartialInfo(
+                usuario.getIdUsuario(),
+                usuario.getNombre(),
+                usuario.getFoto(),
+               "usuario"
+        );
 
 
+        // Mapear información de las tiendas asociadas
+        List<TiendaInfo> tiendasInfo = usuario.getTiendas().stream()
+                .map(tienda -> new TiendaInfo(
+                        tienda.getIdTienda(),
+                        tienda.getNombre(),
+                        tienda.getFoto(),
+                        "tienda",
+                        tienda.getTipoTienda().name()
+                ))
+                .toList();
+
+
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setUsuario(usuarioInfo);
+        accountInfo.setTiendas(tiendasInfo);
+        accountInfo.setIdActivo(usuario.getIdUsuario());
+
+        // Construir y devolver AuthResponse
         return AuthResponse.builder()
                 .token(token)
+                .accountInfo(accountInfo)
                 .build();
     }
 }

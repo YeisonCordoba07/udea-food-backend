@@ -29,6 +29,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/tienda/perfilTienda").permitAll()
+                        .requestMatchers("/tienda/buscarPorNombre").permitAll()
+                        .requestMatchers("/tienda/obtenerTodas").permitAll()
+                        .requestMatchers("/tienda/obtenerTodasPorTipo").permitAll()
+                        .requestMatchers("/producto/buscarPorNombreProducto").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement

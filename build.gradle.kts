@@ -42,6 +42,8 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 }
 
 tasks.withType<Test> {

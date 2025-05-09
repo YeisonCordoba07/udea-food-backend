@@ -1,7 +1,7 @@
 package com.udeafood.controller;
 
 import com.udeafood.model.ImagenProducto;
-import com.udeafood.sevice.ImagenProductoService;
+import com.udeafood.sevice.interfaces.IImagenProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,19 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImagenProductoController {
 
-    private final ImagenProductoService imagenProductoService;
-
+    private final IImagenProductoService iImagenProductoService;
 
 
 
     @GetMapping("/getAll")
     public ResponseEntity<List<ImagenProducto>> getAll(){
-        return ResponseEntity.ok( imagenProductoService.getAll());
+        return ResponseEntity.ok( iImagenProductoService.getAll());
     }
 
     @GetMapping("/buscarPorIdProducto")
     public ResponseEntity<List<ImagenProducto>> buscarPorIdProducto(Integer idProducto){
-        return ResponseEntity.ok( imagenProductoService.getAllByIdProducto(idProducto));
+        return ResponseEntity.ok( iImagenProductoService.getAllByIdProducto(idProducto));
     }
 
 }

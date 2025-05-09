@@ -143,4 +143,8 @@ public class TiendaService {
     public List<Tienda> getTiendaByNombreUsuario(String nombreUsuario) {
         return iTiendaRepository.findAllByUsuario_Usuario(nombreUsuario);
     }
+
+    public boolean existsById(Integer id) {
+        return iTiendaRepository.existsById(id);
+    }
 }

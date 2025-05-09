@@ -15,5 +15,6 @@ public class Ingrediente {
     private String nombre;
     private int minSeleccion;
     private int maxSeleccion;
+    private boolean multiple;
     private List<OpcionIngrediente> opciones;
 }

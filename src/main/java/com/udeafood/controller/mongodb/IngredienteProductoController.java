@@ -17,7 +17,7 @@ public class IngredienteProductoController {
 
 
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<IngredienteProducto> guardar(@RequestBody IngredienteProducto ingredientes) {
         IngredienteProducto guardado = ingredienteProductoService.guardarIngredientes(ingredientes);
         return ResponseEntity.ok(guardado);

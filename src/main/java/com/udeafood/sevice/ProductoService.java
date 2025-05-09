@@ -5,6 +5,7 @@ import com.udeafood.DTO.ProductoRequestDTO;
 import com.udeafood.mapper.ProductoMapper;
 import com.udeafood.model.*;
 import com.udeafood.repository.IProductoRepository;
+import com.udeafood.sevice.interfaces.IProductoService;
 import com.udeafood.sevice.mongodb.IngredienteProductoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ProductoService {
+public class ProductoService implements IProductoService {
 
     private final IProductoRepository iProductoRepository;
     private final ImagenProductoService imagenProductoService;
@@ -28,22 +29,22 @@ public class ProductoService {
     private final TiendaService tiendaService;
     private final IngredienteProductoService ingredienteProductoService;
 
-
+    @Override
     public List<ProductoDTO> getAll() {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAll());
     }
 
-
+    @Override
     public List<ProductoDTO> getAllByIdSeccionTienda(Integer idSeccion) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findBySeccionTienda_IdSeccionTienda(idSeccion));
     }
 
-
+    @Override
     public List<ProductoDTO> getAllByIdTienda(Integer idTienda) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByIdTienda(idTienda));
     }
 
-
+    @Override
     public ProductoDTO getByIdProducto(Integer idProducto) {
         Optional<Producto> producto1 = iProductoRepository.findById(idProducto);
 
@@ -51,17 +52,17 @@ public class ProductoService {
         return producto1.map(productoMapper::productoToProductoDTO).orElse(null);
     }
 
-
+    @Override
     public List<ProductoDTO> getByNombreCategoria(String categoria) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombreCategoria(categoria));
     }
 
-
+    @Override
     public List<ProductoDTO> getByNombreProducto(String nombre) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombre(nombre));
     }
 
-
+    @Override
     public void save(ProductoRequestDTO productoRequestDTO) {
 
         Producto newProducto = new Producto();

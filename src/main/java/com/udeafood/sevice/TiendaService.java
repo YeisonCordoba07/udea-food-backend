@@ -2,13 +2,13 @@ package com.udeafood.sevice;
 
 
 import com.udeafood.DTO.PerfilTiendaDTO;
-import com.udeafood.DTO.ProductoRequestDTO;
 import com.udeafood.DTO.ProductoResponseDTO;
 import com.udeafood.DTO.SeccionTiendaDTO;
 import com.udeafood.model.Categoria;
 import com.udeafood.model.Tienda;
 import com.udeafood.model.util.TipoTienda;
 import com.udeafood.repository.ITiendaRepository;
+import com.udeafood.sevice.interfaces.ITiendaService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class TiendaService {
+public class TiendaService implements ITiendaService {
 
     private final ITiendaRepository iTiendaRepository;
 
 
 
-
+    @Override
     public List<Tienda> getAll(){
         return iTiendaRepository.findAll();
     }
 
 
-
+    @Override
     public List<Tienda> getAllByType(String tipoTienda) {
 
         if(tipoTienda.equalsIgnoreCase("FORMAL")){
@@ -46,13 +46,13 @@ public class TiendaService {
     }
 
 
-
+    @Override
     public Tienda getTiendaById(Integer id){
         return iTiendaRepository.findById(id).orElse(null);
     }
 
 
-
+    @Override
     public PerfilTiendaDTO getPerfilTienda(Integer id) {
         Tienda tienda = iTiendaRepository.findById(id).orElse(null);
         if (tienda == null) return null;
@@ -117,21 +117,25 @@ public class TiendaService {
 
 
 
-
+    @Override
     public List<Tienda> getTiendaByNombre(String nombre){
         return iTiendaRepository.findByNombre(nombre);
     }
 
 
+    @Override
     public List<Tienda> getTiendaPorNombreCategoria(String categoria){
         return iTiendaRepository.findTiendaByNombreCategoria(categoria);
     }
 
 
+    @Override
     public List<Tienda> getTiendaByIdUsuario(Integer idUsuario){
         return iTiendaRepository.findAllByUsuario_IdUsuario(idUsuario);
     }
 
+
+    @Override
     public Integer getIdTiendaByIdProducto(Integer idProducto){
         Tienda tienda = iTiendaRepository.findBySecciones_Productos_IdProducto(idProducto);
         if(tienda != null) {
@@ -140,10 +144,14 @@ public class TiendaService {
         return null;
     }
 
+
+    @Override
     public List<Tienda> getTiendaByNombreUsuario(String nombreUsuario) {
         return iTiendaRepository.findAllByUsuario_Usuario(nombreUsuario);
     }
 
+
+    @Override
     public boolean existsById(Integer id) {
         return iTiendaRepository.existsById(id);
     }

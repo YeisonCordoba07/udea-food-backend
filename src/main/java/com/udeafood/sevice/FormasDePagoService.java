@@ -3,6 +3,7 @@ package com.udeafood.sevice;
 
 import com.udeafood.model.FormasDePago;
 import com.udeafood.repository.IFormasDePagoRepository;
+import com.udeafood.sevice.interfaces.IFormasDePagoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FormasDePagoService {
+public class FormasDePagoService implements IFormasDePagoService {
 
     private final IFormasDePagoRepository iFormasDePagoRepository;
 

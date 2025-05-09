@@ -1,7 +1,7 @@
 package com.udeafood.controller;
 
 import com.udeafood.model.Rol;
-import com.udeafood.sevice.RolService;
+import com.udeafood.sevice.interfaces.IRolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,13 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RolController {
 
-    private final RolService rolService;
+    private final IRolService iRolService;
 
 
 
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Rol>> getAll(){
-        return ResponseEntity.ok( rolService.getAll());
+        return ResponseEntity.ok( iRolService.getAll());
     }
 }

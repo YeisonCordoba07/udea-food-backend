@@ -2,8 +2,6 @@ package com.udeafood.DTO.auth;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor

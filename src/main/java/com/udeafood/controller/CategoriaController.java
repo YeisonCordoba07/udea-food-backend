@@ -1,7 +1,6 @@
 package com.udeafood.controller;
 
 import com.udeafood.model.Categoria;
-import com.udeafood.sevice.CategoriaService;
 import com.udeafood.sevice.interfaces.ICategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

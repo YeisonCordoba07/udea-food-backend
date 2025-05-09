@@ -3,7 +3,6 @@ package com.udeafood.sevice.mongodb;
 import com.udeafood.model.IngredienteProducto;
 import com.udeafood.repository.mongodb.IIngredienteProductoRepository;
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

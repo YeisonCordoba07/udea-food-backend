@@ -70,5 +70,18 @@ public class ProductoController {
         }
     }
 
+    // DELETE ------------------------------------------------------------------------------
+    @DeleteMapping("/borrar")
+    public ResponseEntity<?> delete(@RequestParam Integer id) {
+        try {
+            iProductoService.delete(id);
+            return ResponseEntity.status(200).body("Eliminado con exito");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno del servidor");
+        }
+    }
+
 
 }

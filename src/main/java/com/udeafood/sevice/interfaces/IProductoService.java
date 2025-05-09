@@ -19,4 +19,6 @@ public interface IProductoService {
     List<ProductoDTO> getByNombreProducto(String nombre);
 
     void save(ProductoRequestDTO productoRequestDTO);
+
+    void delete(Integer id);
 }

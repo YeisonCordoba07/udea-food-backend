@@ -171,4 +171,18 @@ public class ProductoService implements IProductoService {
 
 
     }
+
+    @Override
+    public void delete(Integer id) {
+        if (!iProductoRepository.existsById(id)) {
+            throw new IllegalArgumentException("El producto con el ID proporcionado no existe.");
+        }
+
+        // Eliminar el IngredienteProducto asociado al producto
+        ingredienteProductoService.obtenerIngredientesPorProductoId(id)
+                .ifPresent(ingredienteProducto -> ingredienteProductoService.eliminarPorId(ingredienteProducto.getId()));
+
+        // Eliminar el producto
+        iProductoRepository.deleteById(id);
+    }
 }

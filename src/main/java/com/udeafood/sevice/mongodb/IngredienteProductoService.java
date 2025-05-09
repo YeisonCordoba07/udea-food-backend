@@ -23,4 +23,8 @@ public class IngredienteProductoService {
     public Optional<IngredienteProducto> obtenerIngredientesPorProductoId(Integer idProducto) {
         return iIngredienteProductoRepository.findByIdProducto(idProducto);
     }
+
+    public void eliminarPorId(String id) {
+        iIngredienteProductoRepository.deleteById(id);
+    }
 }

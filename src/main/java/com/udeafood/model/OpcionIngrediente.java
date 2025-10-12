@@ -1,19 +1,16 @@
-package com.udeafood.DTO;
-
+package com.udeafood.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeccionTiendaDTO {
-    private Integer idSeccionTienda;
+public class OpcionIngrediente {
+
     private String nombre;
-    private List<ProductoResponseDTO> productos;
+    private int costo;
 }

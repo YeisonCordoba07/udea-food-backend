@@ -1,7 +1,7 @@
 package com.udeafood.controller;
 
 import com.udeafood.model.FormasDePago;
-import com.udeafood.sevice.FormasDePagoService;
+import com.udeafood.sevice.interfaces.IFormasDePagoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,12 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FormasDePagoController {
 
-    private final FormasDePagoService formasDePagoService;
+    private final IFormasDePagoService iFormasDePagoService;
 
 
 
     @GetMapping("/getAll")
     public ResponseEntity<List<FormasDePago>> getAll(){
-        return ResponseEntity.ok( formasDePagoService.getAll());
+        return ResponseEntity.ok( iFormasDePagoService.getAll());
     }
 }

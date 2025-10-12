@@ -5,6 +5,8 @@ import com.udeafood.DTO.ProductoRequestDTO;
 import com.udeafood.mapper.ProductoMapper;
 import com.udeafood.model.*;
 import com.udeafood.repository.IProductoRepository;
+import com.udeafood.sevice.interfaces.IProductoService;
+import com.udeafood.sevice.mongodb.IngredienteProductoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,56 +16,53 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ProductoService {
+public class ProductoService implements IProductoService {
 
     private final IProductoRepository iProductoRepository;
     private final ImagenProductoService imagenProductoService;
     private final CategoriaService categoriaService;
     private final SeccionTiendaService seccionTiendaService;
     private final ProductoMapper productoMapper;
+    private final TiendaService tiendaService;
+    private final IngredienteProductoService ingredienteProductoService;
 
-
-
-
-    public List<ProductoDTO> getAll(){
+    @Override
+    public List<ProductoDTO> getAll() {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAll());
     }
 
-
-    public List<ProductoDTO> getAllByIdSeccionTienda(Integer idSeccion){
+    @Override
+    public List<ProductoDTO> getAllByIdSeccionTienda(Integer idSeccion) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findBySeccionTienda_IdSeccionTienda(idSeccion));
     }
 
-
-    public List<ProductoDTO> getAllByIdTienda(Integer idTienda){
+    @Override
+    public List<ProductoDTO> getAllByIdTienda(Integer idTienda) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByIdTienda(idTienda));
     }
 
-
-    public ProductoDTO getByIdProducto(Integer idProducto){
+    @Override
+    public ProductoDTO getByIdProducto(Integer idProducto) {
         Optional<Producto> producto1 = iProductoRepository.findById(idProducto);
 
         // Return empty object
         return producto1.map(productoMapper::productoToProductoDTO).orElse(null);
     }
 
-
-    public List<ProductoDTO> getByNombreCategoria(String categoria){
+    @Override
+    public List<ProductoDTO> getByNombreCategoria(String categoria) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombreCategoria(categoria));
     }
 
-
+    @Override
     public List<ProductoDTO> getByNombreProducto(String nombre) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombre(nombre));
     }
 
-
-
-
+    @Override
     public void save(ProductoRequestDTO productoRequestDTO) {
 
         Producto newProducto = new Producto();
@@ -75,11 +74,8 @@ public class ProductoService {
         //newProducto.setImagenesProducto(productoDTO.getImagenes());
 
 
-
         // Validate that selected categories exist
         List<Categoria> existingCategories = categoriaService.getAll();
-        System.out.println("#############################################################");
-        System.out.println("EXISTIS CATEGORIES: "+ existingCategories);
 
         List<Integer> existingCategoryIds = existingCategories.stream()
                 .map(Categoria::getIdCategoria)
@@ -93,12 +89,11 @@ public class ProductoService {
             throw new IllegalArgumentException("Some categories do not exist. Error to create product");
         }
         List<Categoria> newCategoryList = new ArrayList<>();
-        for(int c : categoryList){
+        for (int c : categoryList) {
             newCategoryList.add(categoriaService.getById(c));
         }
 
         newProducto.setCategorias(newCategoryList);
-
 
 
         // Validate that selected SeccionTienda exist and if not, create a default one
@@ -127,10 +122,10 @@ public class ProductoService {
             // Set the existing SeccionTienda
             SeccionTienda auxSeccionTienda = new SeccionTienda();
             auxSeccionTienda.setIdSeccionTienda(productoRequestDTO.getIdSeccionTienda());
+            /*  THE NAME NO MATTER */
             auxSeccionTienda.setNombre("thing nombre");
             newProducto.setSeccionTienda(auxSeccionTienda);
         }
-
 
 
         // Save the product
@@ -138,16 +133,56 @@ public class ProductoService {
 
 
         // If the product has images, save them
-        for(String enlaceImagen : productoRequestDTO.getImagenes()){
+        for (String enlaceImagen : productoRequestDTO.getImagenes()) {
 
-                ImagenProducto newImagenProducto = new ImagenProducto();
-                newImagenProducto.setEnlaceImagen(enlaceImagen);
+            ImagenProducto newImagenProducto = new ImagenProducto();
+            newImagenProducto.setEnlaceImagen(enlaceImagen);
 
-                newImagenProducto.setProducto(savedProducto);
-                imagenProductoService.save(newImagenProducto);
+            newImagenProducto.setProducto(savedProducto);
+            imagenProductoService.save(newImagenProducto);
 
+        }
+        // Save the ingredients
+        IngredienteProducto newIngredienteProducto = productoRequestDTO.getIngredienteProducto();
+        if (newIngredienteProducto != null) {
+            newIngredienteProducto.setIdProducto(savedProducto.getIdProducto());
+            if (tiendaService.existsById(newIngredienteProducto.getIdTienda())) {
+                newIngredienteProducto.setIdTienda(newIngredienteProducto.getIdTienda());
+            } else {
+                throw new IllegalArgumentException("Selected Tienda does not exist. Error to create product");
+            }
+            if (newIngredienteProducto.getIngredientes() != null && !newIngredienteProducto.getIngredientes().isEmpty()) {
+
+                if ( newIngredienteProducto.getIngredientes().stream().anyMatch(ingrediente ->
+                        ingrediente.getNombre() == null ||
+                        ingrediente.getNombre().isEmpty() ||
+                        ingrediente.getOpciones() == null ||
+                        ingrediente.getOpciones().isEmpty() ||
+                        ingrediente.getOpciones().stream().anyMatch(opcion -> opcion.getNombre() == null || opcion.getNombre().isEmpty())))
+                {
+                    throw new IllegalArgumentException("El nombre del ingrediente está vacio o no tiene opciones. Error al crear el producto");
+                }
+            }
+
+
+            // Save the ingredient product
+            ingredienteProductoService.guardarIngredientes(newIngredienteProducto);
         }
 
 
+    }
+
+    @Override
+    public void delete(Integer id) {
+        if (!iProductoRepository.existsById(id)) {
+            throw new IllegalArgumentException("El producto con el ID proporcionado no existe.");
+        }
+
+        // Eliminar el IngredienteProducto asociado al producto
+        ingredienteProductoService.obtenerIngredientesPorProductoId(id)
+                .ifPresent(ingredienteProducto -> ingredienteProductoService.eliminarPorId(ingredienteProducto.getId()));
+
+        // Eliminar el producto
+        iProductoRepository.deleteById(id);
     }
 }

@@ -1,7 +1,8 @@
 package com.udeafood.DTO;
 
 
-import com.udeafood.model.Categoria;
+
+import com.udeafood.model.IngredienteProducto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,5 @@ public class ProductoRequestDTO {
     private Integer idSeccionTienda;
 
     private Integer idTienda;
+    private IngredienteProducto ingredienteProducto;
 }

@@ -4,6 +4,7 @@ import com.udeafood.DTO.NuevaSeccionTiendaDTO;
 import com.udeafood.model.SeccionTienda;
 import com.udeafood.model.Tienda;
 import com.udeafood.repository.ISeccionTiendaRepository;
+import com.udeafood.sevice.interfaces.ISeccionTiendaService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,27 +14,27 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SeccionTiendaService {
+public class SeccionTiendaService implements ISeccionTiendaService {
 
     private final ISeccionTiendaRepository iSeccionTiendaRepository;
     private final TiendaService tiendaService;
 
-
+    @Override
     public List<SeccionTienda> getAll(){
         return iSeccionTiendaRepository.findAll();
     }
 
-
+    @Override
     public List<SeccionTienda> getByTiendaId(Integer idTienda){
         return iSeccionTiendaRepository.findAllByIdTienda(idTienda);
     }
 
-
+    @Override
     public SeccionTienda saveDefault(SeccionTienda defaultSeccionTienda) {
         return iSeccionTiendaRepository.save(defaultSeccionTienda);
     }
 
-
+    @Override
     public void create(NuevaSeccionTiendaDTO nuevaSeccionTiendaDTO) {
 
         if (nuevaSeccionTiendaDTO == null) {

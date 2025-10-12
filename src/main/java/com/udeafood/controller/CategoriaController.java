@@ -1,7 +1,7 @@
 package com.udeafood.controller;
 
 import com.udeafood.model.Categoria;
-import com.udeafood.sevice.CategoriaService;
+import com.udeafood.sevice.interfaces.ICategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,13 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoriaController {
 
-    private final CategoriaService categoriaService;
+    private final ICategoriaService iCategoriaService;
 
 
 
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Categoria>> getAll(){
-        return ResponseEntity.ok(categoriaService.getAll());
+        return ResponseEntity.ok(iCategoriaService.getAll());
     }
 }

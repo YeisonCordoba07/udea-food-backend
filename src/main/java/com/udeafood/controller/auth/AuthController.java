@@ -1,8 +1,8 @@
 package com.udeafood.controller.auth;
 
-import com.udeafood.DTO.auth.AuthResponse;
 import com.udeafood.DTO.LoginRequest;
 import com.udeafood.DTO.UsuarioDTO;
+import com.udeafood.DTO.auth.AuthResponse;
 import com.udeafood.sevice.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

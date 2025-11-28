@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -35,6 +37,8 @@ public class SeccionTiendaController {
     @PostMapping("crear")
     public ResponseEntity<?> create(@RequestBody NuevaSeccionTiendaDTO nuevaSeccionTiendaDTO){
        iSeccionTiendaService.create(nuevaSeccionTiendaDTO);
-       return ResponseEntity.status(HttpStatus.CREATED).body("Sección creada exitosamente");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "ección creada exitosamente");
+       return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

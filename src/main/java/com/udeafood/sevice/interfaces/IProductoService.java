@@ -16,6 +16,8 @@ public interface IProductoService {
 
     List<ProductoDTO> getByNombreCategoria(String categoria);
 
+    List<ProductoDTO> getByIdCategoria(Integer idCategoria);
+
     List<ProductoDTO> getByNombreProducto(String nombre);
 
     void save(ProductoRequestDTO productoRequestDTO);

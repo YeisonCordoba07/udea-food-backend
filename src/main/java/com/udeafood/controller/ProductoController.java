@@ -52,6 +52,11 @@ public class ProductoController {
         return ResponseEntity.ok(iProductoService.getByNombreCategoria(categoria));
     }
 
+    @GetMapping("/buscarPorIdCategoria")
+    public ResponseEntity<List<ProductoDTO>> getByIdCategoria(@RequestParam Integer idCategoria){
+        return ResponseEntity.ok(iProductoService.getByIdCategoria(idCategoria));
+    }
+
     @GetMapping("/buscarPorNombreProducto")
     public ResponseEntity<List<ProductoDTO>> getByNombreProducto(@RequestParam String nombre){
         return ResponseEntity.ok(iProductoService.getByNombreProducto(nombre));

@@ -58,6 +58,11 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    public List<ProductoDTO> getByIdCategoria(Integer idCategoria) {
+        return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByIdCategoria(idCategoria));
+    }
+
+    @Override
     public List<ProductoDTO> getByNombreProducto(String nombre) {
         return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombre(nombre));
     }

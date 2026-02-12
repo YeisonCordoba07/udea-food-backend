@@ -30,10 +30,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/tienda/perfilTienda").permitAll()
-                        .requestMatchers("/tienda/buscarPorNombre").permitAll()
+                        .requestMatchers("/tienda/buscarPorNombre/**").permitAll()
                         .requestMatchers("/tienda/obtenerTodas").permitAll()
                         .requestMatchers("/tienda/obtenerTodasPorTipo").permitAll()
                         .requestMatchers("/producto/buscarPorNombreProducto").permitAll()
+                        .requestMatchers("/producto/buscarPorNombreCategoria/**").permitAll()
+                        .requestMatchers("/producto/buscarPorIdCategoria/**").permitAll()
                         .requestMatchers("/categoria/getAll").permitAll()
                         .requestMatchers("ingrediente/**").permitAll()
                         .anyRequest().authenticated()

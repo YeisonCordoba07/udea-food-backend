@@ -7,4 +7,6 @@ import java.util.List;
 public interface ICategoriaService {
     List<Categoria> getAll();
     Categoria getById(Integer idCategoria);
+    public List<Categoria> getAllByIds(List<Integer> idsCategoria);
+
 }

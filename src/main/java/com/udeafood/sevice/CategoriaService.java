@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -27,4 +28,10 @@ public class CategoriaService implements ICategoriaService {
     public Categoria getById(Integer idCategoria){
         return iCategoriaRepository.findById(idCategoria).orElseThrow();
     }
+    
+    @Override
+    public List<Categoria> getAllByIds(List<Integer> idsCategoria){
+        return iCategoriaRepository.findAllById(idsCategoria);
+    }
+    
 }

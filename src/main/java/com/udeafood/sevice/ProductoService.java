@@ -5,6 +5,7 @@ import com.udeafood.DTO.ProductoRequestDTO;
 import com.udeafood.mapper.ProductoMapper;
 import com.udeafood.model.*;
 import com.udeafood.repository.IProductoRepository;
+import com.udeafood.sevice.interfaces.ICategoriaService;
 import com.udeafood.sevice.interfaces.IProductoService;
 import com.udeafood.sevice.mongodb.IngredienteProductoService;
 import jakarta.transaction.Transactional;
@@ -23,7 +24,7 @@ public class ProductoService implements IProductoService {
 
     private final IProductoRepository iProductoRepository;
     private final ImagenProductoService imagenProductoService;
-    private final CategoriaService categoriaService;
+    private final ICategoriaService iCategoriaService;
     private final SeccionTiendaService seccionTiendaService;
     private final ProductoMapper productoMapper;
     private final TiendaService tiendaService;
@@ -78,27 +79,7 @@ public class ProductoService implements IProductoService {
 
         //newProducto.setImagenesProducto(productoDTO.getImagenes());
 
-
-        // Validate that selected categories exist
-        List<Categoria> existingCategories = categoriaService.getAll();
-
-        List<Integer> existingCategoryIds = existingCategories.stream()
-                .map(Categoria::getIdCategoria)
-                .toList();
-
-        List<Integer> categoryList = productoRequestDTO.getCategorias().stream()
-                .filter(categoria -> existingCategoryIds.contains(categoria))
-                .toList();
-
-        if (categoryList.size() != productoRequestDTO.getCategorias().size()) {
-            throw new IllegalArgumentException("Some categories do not exist. Error to create product");
-        }
-        List<Categoria> newCategoryList = new ArrayList<>();
-        for (int c : categoryList) {
-            newCategoryList.add(categoriaService.getById(c));
-        }
-
-        newProducto.setCategorias(newCategoryList);
+        newProducto.setCategorias(verifyCategories(productoRequestDTO.getCategorias()));
 
 
         // Validate that selected SeccionTienda exist and if not, create a default one
@@ -176,6 +157,24 @@ public class ProductoService implements IProductoService {
 
 
     }
+
+    protected List<Categoria> verifyCategories(List<Integer> categoriesIds) {
+        System.out.println("Existing Categorias: " + categoriesIds);
+
+        if(categoriesIds != null && !categoriesIds.isEmpty()){
+            List<Categoria> categoryList = iCategoriaService.getAllByIds(categoriesIds);
+
+            if(categoryList.size() != categoriesIds.size()) {
+                throw new IllegalArgumentException("Alguna de las categorias no existe. El producto no se ha creado");
+            }
+            System.out.println("Final Categorias: " + categoryList);
+            return categoryList;
+        }
+
+        return List.of();
+    }
+
+
 
     @Override
     public void delete(Integer id) {

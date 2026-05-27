@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -85,33 +86,9 @@ public class ProductoService implements IProductoService {
         // Validate that selected SeccionTienda exist and if not, create a default one
         List<SeccionTienda> existingSeccionTienda = seccionTiendaService.getByTiendaId(productoRequestDTO.getIdTienda());
 
-        if (existingSeccionTienda.isEmpty()) {
-            // Create a default SeccionTienda if none exist
-            SeccionTienda defaultSeccionTienda = new SeccionTienda();
-            defaultSeccionTienda.setNombre("Productos");
+        SeccionTienda seccionTienda = verifySeccionTienda(existingSeccionTienda, productoRequestDTO.getIdTienda(), productoRequestDTO.getIdSeccionTienda());
 
-            Tienda auxTienda = new Tienda();
-            auxTienda.setIdTienda(productoRequestDTO.getIdTienda());
-
-            defaultSeccionTienda.setTienda(auxTienda);
-            SeccionTienda savedSeccionTienda = seccionTiendaService.saveDefault(defaultSeccionTienda);
-            newProducto.setSeccionTienda(savedSeccionTienda);
-        } else {
-            // Check if the selected SeccionTienda exists
-            boolean seccionExists = existingSeccionTienda.stream()
-                    .anyMatch(seccion -> (seccion.getIdSeccionTienda() == productoRequestDTO.getIdSeccionTienda()));
-
-            if (!seccionExists) {
-                throw new IllegalArgumentException("Selected SeccionTienda does not exist. Error to create product");
-            }
-
-            // Set the existing SeccionTienda
-            SeccionTienda auxSeccionTienda = new SeccionTienda();
-            auxSeccionTienda.setIdSeccionTienda(productoRequestDTO.getIdSeccionTienda());
-            /*  THE NAME NO MATTER */
-            auxSeccionTienda.setNombre("thing nombre");
-            newProducto.setSeccionTienda(auxSeccionTienda);
-        }
+        newProducto.setSeccionTienda(seccionTienda);
 
 
         // Save the product
@@ -158,6 +135,10 @@ public class ProductoService implements IProductoService {
 
     }
 
+
+
+
+
     protected List<Categoria> verifyCategories(List<Integer> categoriesIds) {
         System.out.println("Existing Categorias: " + categoriesIds);
 
@@ -172,6 +153,43 @@ public class ProductoService implements IProductoService {
         }
 
         return List.of();
+    }
+
+
+    protected SeccionTienda verifySeccionTienda(List<SeccionTienda> existingSeccionTienda, Integer idTienda, Integer idSeccionTienda) {
+
+        if(existingSeccionTienda.isEmpty()){
+            // Create a default SeccionTienda if none exist
+            SeccionTienda defaultSeccionTienda = new SeccionTienda();
+            defaultSeccionTienda.setNombre("Productos");
+
+            Tienda tienda = tiendaService.getTiendaById(idTienda);
+            if(tienda == null){
+                throw new IllegalArgumentException("El tienda no existe. Error al crear un producto");
+            }
+            defaultSeccionTienda.setTienda(tienda);
+            return seccionTiendaService.saveDefault(defaultSeccionTienda);
+        }else{
+            // Check if the selected SeccionTienda exists
+            boolean seccionExists = existingSeccionTienda.stream()
+                    .anyMatch(seccion -> (seccion.getIdSeccionTienda() == idSeccionTienda));
+
+            if (!seccionExists) {
+                throw new IllegalArgumentException("La seccion seleccionada no existe. Error al crear producto");
+            }
+
+            SeccionTienda seccionTienda = existingSeccionTienda.stream().filter(
+                    seccion -> seccion.getIdSeccionTienda() == idSeccionTienda
+            ).findFirst().orElse(null);
+
+            if(seccionTienda == null){
+                throw new IllegalArgumentException("No se encontró la sección. Error interno al crear producto");
+            }
+            return seccionTienda;
+
+        }
+
+
     }
 
 

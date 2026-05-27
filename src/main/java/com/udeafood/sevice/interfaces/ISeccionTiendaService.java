@@ -13,4 +13,6 @@ public interface ISeccionTiendaService {
     SeccionTienda saveDefault(SeccionTienda defaultSeccionTienda);
 
     void create(NuevaSeccionTiendaDTO nuevaSeccionTiendaDTO);
+
+    SeccionTienda findById(Integer idSeccionTienda);
 }

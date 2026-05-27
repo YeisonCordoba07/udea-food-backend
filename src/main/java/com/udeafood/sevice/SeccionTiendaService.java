@@ -60,4 +60,9 @@ public class SeccionTiendaService implements ISeccionTiendaService {
 
         iSeccionTiendaRepository.save(seccionTienda);
     }
+
+    @Override
+    public SeccionTienda findById(Integer idSeccionTienda) {
+        return iSeccionTiendaRepository.findById(idSeccionTienda).orElse(null);
+    }
 }

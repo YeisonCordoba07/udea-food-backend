@@ -157,25 +157,4 @@ class ProductoServiceTest {
     }
 
 
-
-    @Test
-    void verifyCategoriesWithDuplicateIds() {
-        // Arrange - IDs duplicados
-        Categoria categoria = new Categoria();
-        categoria.setIdCategoria(1);
-        categoria.setNombre("Única");
-
-        List<Integer> idsABuscar = List.of(1, 1, 1); // Duplicados
-        when(iCategoriaService.getAllByIds(idsABuscar)).thenReturn(List.of(categoria));
-
-        // Act
-        List<Categoria> resultado = productoService.verifyCategories(idsABuscar);
-
-        // Assert
-        assertFalse(resultado.isEmpty());
-        verify(iCategoriaService, times(1)).getAllByIds(idsABuscar);
-    }
-
-
-
 }

@@ -1,7 +1,11 @@
 package com.udeafood.sevice;
 
 import com.udeafood.model.Categoria;
+import com.udeafood.model.SeccionTienda;
+import com.udeafood.model.Tienda;
 import com.udeafood.sevice.interfaces.ICategoriaService;
+import com.udeafood.sevice.interfaces.ISeccionTiendaService;
+import com.udeafood.sevice.interfaces.ITiendaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,6 +23,12 @@ class ProductoServiceTest {
 
     @Mock
     ICategoriaService iCategoriaService;
+
+    @Mock
+    ITiendaService iTiendaService;
+
+    @Mock
+    ISeccionTiendaService iSeccionTiendaService;
 
     @InjectMocks
     ProductoService productoService;
@@ -148,12 +158,99 @@ class ProductoServiceTest {
 
     @Test
     void verifyCategoriesServiceNotCalledWithEmptyList() {
-
         // Act
         productoService.verifyCategories(List.of());
 
         // Assert
         verify(iCategoriaService, times(0)).getAllByIds(List.of());
+    }
+
+
+
+    @Test
+    void verifySeccionTiendaSuccessfullyWhenSeccionDoesExits(){
+        Integer idTienda = 100;
+        List<SeccionTienda> secciones = List.of();
+
+        Tienda tempoTienda = new Tienda();
+        tempoTienda.setIdTienda(idTienda);
+
+        SeccionTienda expectedSeccion = new SeccionTienda();
+        expectedSeccion.setIdSeccionTienda(200);
+        expectedSeccion.setTienda(tempoTienda);
+
+
+
+        when(iTiendaService.getTiendaById(idTienda)).thenReturn(tempoTienda);
+        when(iSeccionTiendaService.saveDefault(any(SeccionTienda.class))).thenReturn(expectedSeccion);
+
+        SeccionTienda result = productoService.verifySeccionTienda(secciones, idTienda, 30);
+
+        assertEquals(expectedSeccion, result);
+        assertEquals(expectedSeccion.getIdSeccionTienda(), result.getIdSeccionTienda());
+        assertEquals(expectedSeccion.getTienda(), result.getTienda());
+        verify(iTiendaService, times(1)).getTiendaById(idTienda);
+        verify(iSeccionTiendaService, times(1)).saveDefault(any(SeccionTienda.class));
+    }
+
+
+    @Test
+    void verifySeccionTiendaShouldGenerateException(){
+        Integer idTienda = 100;
+        List<SeccionTienda> secciones = List.of();
+
+        Tienda tempoTienda = null;
+
+
+        when(iTiendaService.getTiendaById(idTienda)).thenReturn(tempoTienda);
+
+        assertThrows(IllegalArgumentException.class, () -> productoService
+                .verifySeccionTienda(secciones, idTienda, 30));
+        verify(iTiendaService, times(1)).getTiendaById(idTienda);
+
+    }
+
+
+    @Test
+    void verifySeccionTiendaWithExistingTiendaSholdFinishSuccessfully(){
+        int idTienda = 11;
+        int idSeccionTienda = 100;
+
+        SeccionTienda seccionTienda1 = new SeccionTienda();
+        seccionTienda1.setIdSeccionTienda(idSeccionTienda);
+        SeccionTienda seccionTienda2 = new SeccionTienda();
+        seccionTienda2.setIdSeccionTienda(200);
+
+        List<SeccionTienda> secciones = List.of(seccionTienda1, seccionTienda2);
+
+
+        SeccionTienda result = productoService.verifySeccionTienda(secciones, idTienda, idSeccionTienda);
+
+        assertEquals(seccionTienda1, result);
+        assertEquals(seccionTienda1.getIdSeccionTienda(), result.getIdSeccionTienda());
+        assertEquals(seccionTienda1.getTienda(), result.getTienda());
+
+    }
+
+
+
+    @Test
+    void verifySeccionTiendaWithExistingTiendaSholdGenerateException(){
+        int idTienda = 11;
+        int idSeccionTienda = 999; // No existing id
+
+        SeccionTienda seccionTienda1 = new SeccionTienda();
+        seccionTienda1.setIdSeccionTienda(100);
+        SeccionTienda seccionTienda2 = new SeccionTienda();
+        seccionTienda2.setIdSeccionTienda(200);
+
+        List<SeccionTienda> secciones = List.of(seccionTienda1, seccionTienda2);
+
+
+        assertThrows(IllegalArgumentException.class, ()->
+            productoService.verifySeccionTienda(secciones, idTienda, idSeccionTienda)
+        );
+
     }
 
 

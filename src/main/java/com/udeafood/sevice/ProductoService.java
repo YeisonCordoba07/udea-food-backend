@@ -7,14 +7,14 @@ import com.udeafood.model.*;
 import com.udeafood.repository.IProductoRepository;
 import com.udeafood.sevice.interfaces.ICategoriaService;
 import com.udeafood.sevice.interfaces.IProductoService;
+import com.udeafood.sevice.interfaces.ISeccionTiendaService;
+import com.udeafood.sevice.interfaces.ITiendaService;
 import com.udeafood.sevice.mongodb.IngredienteProductoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -26,9 +26,9 @@ public class ProductoService implements IProductoService {
     private final IProductoRepository iProductoRepository;
     private final ImagenProductoService imagenProductoService;
     private final ICategoriaService iCategoriaService;
-    private final SeccionTiendaService seccionTiendaService;
+    private final ISeccionTiendaService iSeccionTiendaService;
     private final ProductoMapper productoMapper;
-    private final TiendaService tiendaService;
+    private final ITiendaService iTiendaService;
     private final IngredienteProductoService ingredienteProductoService;
 
     @Override
@@ -84,7 +84,7 @@ public class ProductoService implements IProductoService {
 
 
         // Validate that selected SeccionTienda exist and if not, create a default one
-        List<SeccionTienda> existingSeccionTienda = seccionTiendaService.getByTiendaId(productoRequestDTO.getIdTienda());
+        List<SeccionTienda> existingSeccionTienda = iSeccionTiendaService.getByTiendaId(productoRequestDTO.getIdTienda());
 
         SeccionTienda seccionTienda = verifySeccionTienda(existingSeccionTienda, productoRequestDTO.getIdTienda(), productoRequestDTO.getIdSeccionTienda());
 
@@ -109,7 +109,7 @@ public class ProductoService implements IProductoService {
         IngredienteProducto newIngredienteProducto = productoRequestDTO.getIngredienteProducto();
         if (newIngredienteProducto != null) {
             newIngredienteProducto.setIdProducto(savedProducto.getIdProducto());
-            if (tiendaService.existsById(newIngredienteProducto.getIdTienda())) {
+            if (iTiendaService.existsById(newIngredienteProducto.getIdTienda())) {
                 newIngredienteProducto.setIdTienda(newIngredienteProducto.getIdTienda());
             } else {
                 throw new IllegalArgumentException("Selected Tienda does not exist. Error to create product");
@@ -163,12 +163,12 @@ public class ProductoService implements IProductoService {
             SeccionTienda defaultSeccionTienda = new SeccionTienda();
             defaultSeccionTienda.setNombre("Productos");
 
-            Tienda tienda = tiendaService.getTiendaById(idTienda);
+            Tienda tienda = iTiendaService.getTiendaById(idTienda);
             if(tienda == null){
                 throw new IllegalArgumentException("El tienda no existe. Error al crear un producto");
             }
             defaultSeccionTienda.setTienda(tienda);
-            return seccionTiendaService.saveDefault(defaultSeccionTienda);
+            return iSeccionTiendaService.saveDefault(defaultSeccionTienda);
         }else{
             // Check if the selected SeccionTienda exists
             boolean seccionExists = existingSeccionTienda.stream()
@@ -178,14 +178,9 @@ public class ProductoService implements IProductoService {
                 throw new IllegalArgumentException("La seccion seleccionada no existe. Error al crear producto");
             }
 
-            SeccionTienda seccionTienda = existingSeccionTienda.stream().filter(
+            return existingSeccionTienda.stream().filter(
                     seccion -> seccion.getIdSeccionTienda() == idSeccionTienda
             ).findFirst().orElse(null);
-
-            if(seccionTienda == null){
-                throw new IllegalArgumentException("No se encontró la sección. Error interno al crear producto");
-            }
-            return seccionTienda;
 
         }
 

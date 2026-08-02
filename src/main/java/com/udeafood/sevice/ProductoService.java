@@ -87,12 +87,7 @@ public class ProductoService implements IProductoService {
         TipoTienda tipo = null;
 
         if (buscarEn != null && !buscarEn.equalsIgnoreCase("todas")) {
-            try {
-                tipo = TipoTienda.valueOf(buscarEn.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                // Por si envían un valor inválido que no esté en el Enum
-                tipo = null;
-            }
+            tipo = TipoTienda.valueOf(buscarEn.toUpperCase());
         }
         Page<Producto> productosPage = iProductoRepository.findAllByNombre(nombre, tipo, pageable);
         return new SearchResult<ProductoDTO>(

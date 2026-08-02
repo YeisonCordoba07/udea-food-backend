@@ -20,7 +20,7 @@ public interface IProductoService {
 
     List<ProductoDTO> getByIdCategoria(Integer idCategoria);
 
-    SearchResult<ProductoDTO> getByNombreProducto(String nombre, String mostrarSolo, String buscarEn, String ordenarPor, String tipoOrden, Integer page, Integer size);
+    SearchResult<ProductoDTO> getByNombreProducto(String nombre, String buscarEn, String ordenarPor, String tipoOrden, Integer page, Integer size);
 
     void save(ProductoRequestDTO productoRequestDTO);
 

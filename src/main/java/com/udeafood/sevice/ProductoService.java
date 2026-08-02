@@ -73,7 +73,6 @@ public class ProductoService implements IProductoService {
     @Override
     public SearchResult<ProductoDTO> getByNombreProducto(
             String nombre,
-            String mostrarSolo,
             String buscarEn,
             String ordenarPor,
             String tipoOrden,

@@ -2,8 +2,10 @@ package com.udeafood.controller;
 
 import com.udeafood.DTO.ProductoDTO;
 import com.udeafood.DTO.ProductoRequestDTO;
+import com.udeafood.DTO.SearchResult;
 import com.udeafood.sevice.interfaces.IProductoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,8 +60,16 @@ public class ProductoController {
     }
 
     @GetMapping("/buscarPorNombreProducto")
-    public ResponseEntity<List<ProductoDTO>> getByNombreProducto(@RequestParam String nombre){
-        return ResponseEntity.ok(iProductoService.getByNombreProducto(nombre));
+    public ResponseEntity<SearchResult<ProductoDTO>> getByNombreProducto(
+            @RequestParam String nombre,
+            @RequestParam(defaultValue = "productos") String mostrarSolo,
+            @RequestParam(defaultValue = "todas") String buscarEn,
+            @RequestParam(defaultValue = "nombre") String ordenarPor,
+            @RequestParam(defaultValue = "ascendente") String tipoOrden,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size){
+
+        return ResponseEntity.ok(iProductoService.getByNombreProducto(nombre, mostrarSolo, buscarEn, ordenarPor, tipoOrden, page, size));
     }
 
 

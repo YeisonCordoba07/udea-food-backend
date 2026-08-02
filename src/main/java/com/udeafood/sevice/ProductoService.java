@@ -2,8 +2,10 @@ package com.udeafood.sevice;
 
 import com.udeafood.DTO.ProductoDTO;
 import com.udeafood.DTO.ProductoRequestDTO;
+import com.udeafood.DTO.SearchResult;
 import com.udeafood.mapper.ProductoMapper;
 import com.udeafood.model.*;
+import com.udeafood.model.util.TipoTienda;
 import com.udeafood.repository.IProductoRepository;
 import com.udeafood.sevice.interfaces.ICategoriaService;
 import com.udeafood.sevice.interfaces.IProductoService;
@@ -12,6 +14,10 @@ import com.udeafood.sevice.interfaces.ITiendaService;
 import com.udeafood.sevice.mongodb.IngredienteProductoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,8 +71,36 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public List<ProductoDTO> getByNombreProducto(String nombre) {
-        return productoMapper.listProductoToListProductoDTO(iProductoRepository.findAllByNombre(nombre));
+    public SearchResult<ProductoDTO> getByNombreProducto(
+            String nombre,
+            String mostrarSolo,
+            String buscarEn,
+            String ordenarPor,
+            String tipoOrden,
+            Integer page,
+            Integer size
+    ) {
+        Sort.Direction direction = tipoOrden.equalsIgnoreCase("ascendente") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, ordenarPor);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        TipoTienda tipo = null;
+
+        if (buscarEn != null && !buscarEn.equalsIgnoreCase("todas")) {
+            try {
+                tipo = TipoTienda.valueOf(buscarEn.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                // Por si envían un valor inválido que no esté en el Enum
+                tipo = null;
+            }
+        }
+        Page<Producto> productosPage = iProductoRepository.findAllByNombre(nombre, tipo, pageable);
+        return new SearchResult<ProductoDTO>(
+                productosPage.getContent().stream().map(productoMapper::productoToProductoDTO).toList(),
+                productosPage.getNumber(),
+                productosPage.getSize(),
+                productosPage.getTotalElements(),
+                productosPage.getTotalPages());
     }
 
     @Override

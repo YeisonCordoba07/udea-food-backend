@@ -1,6 +1,9 @@
 package com.udeafood.repository;
 
 import com.udeafood.model.Producto;
+import com.udeafood.model.util.TipoTienda;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -35,9 +38,13 @@ public interface IProductoRepository extends JpaRepository<Producto, Integer> {
     List<Producto> findAllByIdCategoria(@PathVariable("idCategoria") Integer idCategoria);
 
     @Query("SELECT p FROM Producto p " +
-            "WHERE LOWER(p.nombre) LIKE LOWER(CONCAT('%', :producto, '%')) " +
+            "WHERE (LOWER(p.nombre) LIKE LOWER(CONCAT('%', :producto, '%')) " +
             "   OR LOWER(p.nombre) LIKE LOWER(CONCAT(:producto, '%')) " +
-            "   OR LOWER(p.nombre) LIKE LOWER(CONCAT('%', :producto))")
-    List<Producto> findAllByNombre(@PathVariable("producto") String producto);
-
+            "   OR LOWER(p.nombre) LIKE LOWER(CONCAT('%', :producto))) " +
+            "AND (:buscarEn IS NULL OR p.seccionTienda.tienda.tipoTienda = :buscarEn)")
+    Page<Producto> findAllByNombre(
+            @PathVariable("producto") String producto,
+            @PathVariable("buscarEn") TipoTienda buscarEn,
+            Pageable pageable
+    );
 }

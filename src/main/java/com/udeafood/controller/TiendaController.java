@@ -2,6 +2,7 @@ package com.udeafood.controller;
 
 
 import com.udeafood.DTO.PerfilTiendaDTO;
+import com.udeafood.DTO.SearchResult;
 import com.udeafood.model.Tienda;
 import com.udeafood.sevice.interfaces.ITiendaService;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,15 @@ public class TiendaController {
 
 
     @GetMapping("/buscarPorNombre")
-    public ResponseEntity<List<Tienda>> getTiendaByNombre(@RequestParam String nombre){
-        return ResponseEntity.ok(iTiendaService.getTiendaByNombre(nombre));
+    public ResponseEntity<SearchResult<Tienda>> getTiendaByNombre(
+            @RequestParam String nombre,
+            @RequestParam(defaultValue = "todas") String buscarEn,
+            @RequestParam(defaultValue = "nombre") String ordenarPor,
+            @RequestParam(defaultValue = "ascendente") String tipoOrden,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size
+    ){
+        return ResponseEntity.ok(iTiendaService.getTiendaByNombre(nombre, buscarEn, ordenarPor, tipoOrden, page, size));
     }
 
 

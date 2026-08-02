@@ -1,6 +1,7 @@
 package com.udeafood.sevice.interfaces;
 
 import com.udeafood.DTO.PerfilTiendaDTO;
+import com.udeafood.DTO.SearchResult;
 import com.udeafood.model.Tienda;
 
 import java.util.List;
@@ -10,7 +11,14 @@ public interface ITiendaService {
     List<Tienda> getAllByType(String tipoTienda);
     Tienda getTiendaById(Integer id);
     PerfilTiendaDTO getPerfilTienda(Integer id);
-    List<Tienda> getTiendaByNombre(String nombre);
+    SearchResult<Tienda> getTiendaByNombre(
+            String nombre,
+            String buscarEn,
+            String ordenarPor,
+            String tipoOrden,
+            Integer page,
+            Integer size
+    );
     List<Tienda> getTiendaPorNombreCategoria(String nombreCategoria);
 
 

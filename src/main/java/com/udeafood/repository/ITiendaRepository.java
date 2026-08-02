@@ -1,8 +1,11 @@
 package com.udeafood.repository;
 
 
+import com.udeafood.DTO.SearchResult;
 import com.udeafood.model.Tienda;
 import com.udeafood.model.util.TipoTienda;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,10 +18,15 @@ public interface ITiendaRepository extends JpaRepository<Tienda, Integer> {
 
 
     @Query("SELECT t FROM Tienda t " +
-            "WHERE LOWER(t.nombre) LIKE LOWER(CONCAT('%', :palabra, '%')) " +
+            "WHERE (LOWER(t.nombre) LIKE LOWER(CONCAT('%', :palabra, '%')) " +
             "   OR LOWER(t.nombre) LIKE LOWER(CONCAT(:palabra, '%')) " +
-            "   OR LOWER(t.nombre) LIKE LOWER(CONCAT('%', :palabra))")
-    List<Tienda> findByNombre(@Param("palabra") String palabra);
+            "   OR LOWER(t.nombre) LIKE LOWER(CONCAT('%', :palabra)))" +
+            "AND (:buscarEn IS NULL OR t.tipoTienda = :buscarEn)")
+    Page<Tienda> findByNombre(
+            @Param("palabra") String palabra,
+            @Param("buscarEn") TipoTienda buscarEn,
+            Pageable pageable
+    );
 
 
     @Query("SELECT t FROM Tienda t JOIN t.categorias c " +

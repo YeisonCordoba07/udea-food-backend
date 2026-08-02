@@ -3,6 +3,7 @@ package com.udeafood.sevice;
 
 import com.udeafood.DTO.PerfilTiendaDTO;
 import com.udeafood.DTO.ProductoResponseDTO;
+import com.udeafood.DTO.SearchResult;
 import com.udeafood.DTO.SeccionTiendaDTO;
 import com.udeafood.model.Categoria;
 import com.udeafood.model.Tienda;
@@ -11,6 +12,10 @@ import com.udeafood.repository.ITiendaRepository;
 import com.udeafood.sevice.interfaces.ITiendaService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -118,8 +123,32 @@ public class TiendaService implements ITiendaService {
 
 
     @Override
-    public List<Tienda> getTiendaByNombre(String nombre){
-        return iTiendaRepository.findByNombre(nombre);
+    public SearchResult<Tienda> getTiendaByNombre(
+            String nombre,
+            String buscarEn,
+            String ordenarPor,
+            String tipoOrden,
+            Integer page,
+            Integer size
+    ){
+        Sort.Direction direction = tipoOrden.equalsIgnoreCase("ascendente") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, ordenarPor);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        TipoTienda tipo = null;
+
+        if (buscarEn != null && !buscarEn.equalsIgnoreCase("todas")) {
+            tipo = TipoTienda.valueOf(buscarEn.toUpperCase());
+        }
+        Page<Tienda> pageTienda = iTiendaRepository.findByNombre(nombre, tipo, pageable);
+
+        return new SearchResult<>(
+                pageTienda.getContent(),
+                pageTienda.getNumber(),
+                pageTienda.getSize(),
+                pageTienda.getTotalElements(),
+                pageTienda.getTotalPages()
+        );
     }
 
 

@@ -16,6 +16,7 @@ public interface ITiendaService {
             String buscarEn,
             String ordenarPor,
             String tipoOrden,
+            String categoria,
             Integer page,
             Integer size
     );

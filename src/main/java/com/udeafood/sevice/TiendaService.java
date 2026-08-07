@@ -128,6 +128,7 @@ public class TiendaService implements ITiendaService {
             String buscarEn,
             String ordenarPor,
             String tipoOrden,
+            String categoria,
             Integer page,
             Integer size
     ){
@@ -140,7 +141,18 @@ public class TiendaService implements ITiendaService {
         if (buscarEn != null && !buscarEn.equalsIgnoreCase("todas")) {
             tipo = TipoTienda.valueOf(buscarEn.toUpperCase());
         }
-        Page<Tienda> pageTienda = iTiendaRepository.findByNombre(nombre, tipo, pageable);
+        String nombreFiltro = (nombre == null
+            || nombre.isBlank()
+            || nombre.equalsIgnoreCase("undefined")
+            || nombre.equalsIgnoreCase("null")) ? null : nombre;
+
+        String categoriaFiltro = (categoria == null
+            || categoria.isBlank()
+            || categoria.equalsIgnoreCase("todas")
+            || categoria.equalsIgnoreCase("undefined")
+            || categoria.equalsIgnoreCase("null")) ? null : categoria;
+
+        Page<Tienda> pageTienda = iTiendaRepository.findByNombre(nombreFiltro, tipo, pageable, categoriaFiltro);
 
         return new SearchResult<>(
                 pageTienda.getContent(),

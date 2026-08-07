@@ -76,6 +76,7 @@ public class ProductoService implements IProductoService {
             String buscarEn,
             String ordenarPor,
             String tipoOrden,
+            String categoria,
             Integer page,
             Integer size
     ) {
@@ -88,7 +89,20 @@ public class ProductoService implements IProductoService {
         if (buscarEn != null && !buscarEn.equalsIgnoreCase("todas")) {
             tipo = TipoTienda.valueOf(buscarEn.toUpperCase());
         }
-        Page<Producto> productosPage = iProductoRepository.findAllByNombre(nombre, tipo, pageable);
+        String categoriaFiltro = (categoria == null
+            || categoria.isBlank()
+            || categoria.equalsIgnoreCase("todas")
+            || categoria.equalsIgnoreCase("undefined")
+            || categoria.equalsIgnoreCase("null"))
+            ? null
+            : categoria;
+
+        String nombreFiltro = (nombre == null
+            || nombre.isBlank()
+            || nombre.equalsIgnoreCase("undefined")
+            || nombre.equalsIgnoreCase("null")) ? null : nombre;
+
+        Page<Producto> productosPage = iProductoRepository.findAllByNombre(nombreFiltro, tipo, pageable, categoriaFiltro);
         return new SearchResult<ProductoDTO>(
                 productosPage.getContent().stream().map(productoMapper::productoToProductoDTO).toList(),
                 productosPage.getNumber(),
